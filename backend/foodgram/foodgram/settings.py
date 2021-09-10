@@ -29,6 +29,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'djoser',
+    'api',
+    'users',
 ]
 
 MIDDLEWARE = [
@@ -121,6 +123,10 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-# DJOSER = {
-
-# }
+DJOSER = {
+    'SERIALIZERS': {
+        # 'user_create': 'djoser.serializers.UserCreateSerializer',
+        'user_create': 'users.serializers.CustomUserCreateSerializer',
+        'user': 'users.serializers.CustomUserSerializer',
+    },
+}
