@@ -132,4 +132,4 @@ dmypy.json
 .idea
 
 .vscode/
-backend/requests.http
+# backend/requests.http

@@ -1,0 +1,56 @@
+POST http://127.0.0.1:8000/api/users/
+Content-Type: application/json
+
+{
+    "email": "am@mn.com",
+    "username": "user7",
+    "password": "passwwors1",
+    "first_name": "user6first",
+    "last_name": "user6last"
+}
+
+###
+###
+GET http://127.0.0.1:8000/api/users/
+Authorization: Token 03c3786a9be381375e00fb3bd9df13dfb7078d49
+
+
+###
+POST http://127.0.0.1:8000/api/token/login/
+Content-Type: application/json
+
+{
+    "username": "admin",
+    "password": "adadad"
+}
+
+###
+POST http://127.0.0.1:8000/users/token/logout/
+Authorization: Token 8df1d3cf0cb2ee3ab1e1fe189cb7db745d06a78a
+
+# ###
+# admin token
+
+# auth_token": "03c3786a9be381375e00fb3bd9df13dfb7078d49
+
+# ###
+###
+POST http://127.0.0.1:8000/users/users/set_password/
+Authorization: Token 81c12ff199a23757a6ecd3d72ea22036ff225588
+Content-Type: application/json
+
+{
+    "new_password": "adadad",
+    "current_password": "1ad1ad1ad"
+}
+
+###
+GET http://127.0.0.1:8000/api/users/subscriptions/
+Content-Type: application/json
+Authorization: Token 03c3786a9be381375e00fb3bd9df13dfb7078d49
+
+###
+GET http://127.0.0.1:8000/api/users/2/
+Content-Type: application/json
+Authorization: Token 03c3786a9be381375e00fb3bd9df13dfb7078d49
+
