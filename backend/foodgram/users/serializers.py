@@ -1,11 +1,27 @@
+from django.db import models
 from djoser.serializers import UserCreateSerializer, UserSerializer
-from rest_framework import serializers
+from rest_framework import fields, serializers
 from rest_framework.validators import UniqueTogetherValidator
 
 from .models import Follow, User
 
 
 class FollowSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        # fields = 'username', 'id', 'email'
+        fields = '__all__'
+        model = User
+
+
+class UserSerialiser(serializers.ModelSerializer):
+
+    class Meta:
+        fields = '__all__'
+        model = User
+
+
+class F_ollowSerializer(serializers.ModelSerializer):
     user = serializers.SlugRelatedField(
         slug_field='username',
         queryset=User.objects.all(),
@@ -16,15 +32,15 @@ class FollowSerializer(serializers.ModelSerializer):
         queryset=User.objects.all()
     )
 
-    def validate(self, attrs):
-        if (
-            attrs['user'] == attrs['following']
-            and self.context['request'].method == 'POST'
-        ):
-            raise serializers.ValidationError(
-                'Вы не можете подписаться сами на себя.'
-            )
-        return attrs
+    # def validate(self, attrs):
+    #     if (
+    #         attrs['user'] == attrs['following']
+    #         and self.context['request'].method == 'GET'
+    #     ):
+    #         raise serializers.ValidationError(
+    #             'Вы не можете подписаться сами на себя.'
+    #         )
+    #     return attrs
 
     class Meta:
         fields = '__all__'
