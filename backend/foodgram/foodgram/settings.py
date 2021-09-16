@@ -105,6 +105,6 @@ STATIC_URL = '/static/'
 DJOSER = {
     'SERIALIZERS': {
         'user_create': 'users.serializers.CustomUserCreateSerializer',
-        'user': 'users.serializers.CustomUserSerializer',
+        'user': 'users.serializers.UserSerializer',
     },
 }

@@ -11,12 +11,19 @@ from .serializers import UserSerializer
 
 
 class CustomUserViewSet(UserViewSet):
+# class CustomUserViewSet(ModelViewSet):
     serializer_class = UserSerializer
 
-    @action(["get"], detail=False)
+    @action(['get'], detail=False)
     def subscriptions(self, request):
         follower = User.objects.filter(follow__user=request.user)
         serializer = self.get_serializer(follower, many=True)
+        return Response(serializer.data)
+
+    @action(['get'], detail=False) ## что-то с переопределением не так
+    def me(self, request):
+        user = User.objects.get(id=request.user.id)
+        serializer = self.get_serializer(user)
         return Response(serializer.data)
 
 
