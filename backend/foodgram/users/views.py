@@ -3,6 +3,7 @@ from django.urls.conf import path
 from djoser.views import UserViewSet
 from rest_framework import generics, mixins, serializers, status, viewsets
 from rest_framework.decorators import action
+from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet, ModelViewSet
 
@@ -26,6 +27,26 @@ class CustomUserViewSet(UserViewSet):
         serializer = self.get_serializer(user)
         return Response(serializer.data)
 
+    @action(['get', 'delete'], detail=True)
+    def subscribe(self, request, id=None):
+        queryset = User.objects.all()
+        follow = get_object_or_404(queryset, id=id)
+        if request.method == "GET":
+            Follow.objects.get_or_create(
+                user=request.user,
+                following=follow,
+            )
+        elif request.method == "DELETE":
+            try:
+                following = Follow.objects.get(
+                    user=request.user,
+                    following=follow
+                )
+                following.delete()
+            except:
+                return Response(status.HTTP_400_BAD_REQUEST)
+        serializer = self.get_serializer(follow)
+        return Response({"asd":"sdf",}, serializer.data)
 
 class ListOrCreateViewSet(mixins.CreateModelMixin,
                           mixins.ListModelMixin,
