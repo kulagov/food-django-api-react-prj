@@ -10,7 +10,6 @@ class Ingredient(models.Model):
     def __str__(self) -> str:
         return f'{self.name}, {self.measurement_unit}'
 
-# https://stackoverflow.com/questions/55143730/how-to-load-json-data-in-django-model
 
 # class Tag(models.Model):
 #     # name
