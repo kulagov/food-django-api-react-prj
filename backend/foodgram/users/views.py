@@ -44,9 +44,13 @@ class CustomUserViewSet(UserViewSet):
                 )
                 following.delete()
             except:
-                return Response(status.HTTP_400_BAD_REQUEST)
+                return Response(
+                    {'errors': 'Вы не подписаны на этого пользователя', },
+                    status.HTTP_400_BAD_REQUEST
+                )
         serializer = self.get_serializer(follow)
-        return Response({"asd":"sdf",}, serializer.data)
+        return Response(serializer.data)
+
 
 class ListOrCreateViewSet(mixins.CreateModelMixin,
                           mixins.ListModelMixin,
