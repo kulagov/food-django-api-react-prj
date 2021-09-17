@@ -1,7 +1,9 @@
 import os
-from datetime import timedelta
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 SECRET_KEY = 'm@ilron7!2^x!ko#90jhv&gm^10tj%%wtz3ms9v&z&r@iupx!$'
 
@@ -18,6 +20,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework.authtoken',
+    'sorl.thumbnail',
     'users',
     'djoser',
     'api',

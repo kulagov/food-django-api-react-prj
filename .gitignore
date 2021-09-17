@@ -133,3 +133,4 @@ dmypy.json
 
 .vscode/
 backend/requests.http
+media
