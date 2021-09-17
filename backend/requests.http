@@ -50,7 +50,24 @@ Content-Type: application/json
 Authorization: Token 03c3786a9be381375e00fb3bd9df13dfb7078d49
 
 ###
-GET http://127.0.0.1:8000/api/users/2/
+GET http://127.0.0.1:8000/api/users/3/subscribe/
 Content-Type: application/json
 Authorization: Token 03c3786a9be381375e00fb3bd9df13dfb7078d49
 
+###
+DELETE http://127.0.0.1:8000/api/users/3/subscribe/
+Content-Type: application/json
+Authorization: Token 03c3786a9be381375e00fb3bd9df13dfb7078d49
+
+
+###
+GET http://127.0.0.1:8000/api/users/me/
+Content-Type: application/json
+Authorization: Token 03c3786a9be381375e00fb3bd9df13dfb7078d49
+
+
+
+###
+GET http://127.0.0.1:8000/api/ingredients/?search=сах
+Content-Type: application/json
+Authorization: Token 03c3786a9be381375e00fb3bd9df13dfb7078d49

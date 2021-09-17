@@ -7,16 +7,17 @@ class Ingredient(models.Model):
     name = models.CharField('name', max_length=50)
     measurement_unit = models.CharField('measurement unit', max_length=50)
 
-    def __str__(self) -> str:
+    def __str__(self):
         return f'{self.name}, {self.measurement_unit}'
 
 
-# class Tag(models.Model):
-#     # name
-#     # colour
-#     # slug
-#     pass
+class Tag(models.Model):
+    name = models.CharField('name', max_length=50)
+    color = models.CharField('color', max_length=7)
+    slug = models.SlugField('slug', max_length=50, unique=True)
 
+    def __str__(self):
+        return f'{self.name} - {self.color}'
 
 # class Recipe(models.Model):
 #     # author
