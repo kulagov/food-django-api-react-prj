@@ -49,18 +49,23 @@ class Recipe(models.Model):
         validators=[validate_int_field],
         default=1
     )
+    ingredients = models.ManyToManyField(
+        Ingredient,
+        through='Component'
+    )
+
+    def __str__(self):
+        return f'{self.name} /{self.author}/'
 
 
 class Component(models.Model):
     recipe = models.ForeignKey(
         Recipe,
         on_delete=models.CASCADE,
-        related_name='ingredients'
     )
     ingredient = models.ForeignKey(
         Ingredient,
         on_delete=models.CASCADE,
-        related_name='components'
     )
     ammount = models.IntegerField(
         validators=[validate_int_field]
