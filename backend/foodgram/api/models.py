@@ -25,7 +25,7 @@ class Tag(models.Model):
 def validate_int_field(value):
     if value < 1:
         raise ValidationError(
-            _('Значение должно быть не менее 1'),
+            ('Значение должно быть не менее 1'),
             params={'value': value},
         )
 
@@ -72,8 +72,30 @@ class Component(models.Model):
     )
 
 
-# class ShoppingList(models.Model):
-#     # user
-#     # recipe
+class ShoppingList(models.Model):
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='shoppinglist'
+    )
+    recipe = models.ForeignKey(
+        Recipe,
+        on_delete=models.CASCADE,
+        related_name='shoppinglist'
+    )
+
+    def __str__(self) -> str:
+        return f'{self.user} -{self.recipe}'
 
 
+class Favorite(models.Model):
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='favlist'
+    )
+    recipe = models.ForeignKey(
+        Recipe,
+        on_delete=models.CASCADE,
+        related_name='favlist'
+    )

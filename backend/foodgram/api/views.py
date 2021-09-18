@@ -1,17 +1,21 @@
 import json
 
-from django.shortcuts import render
 from rest_framework import filters, viewsets
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-from .models import Ingredient
-from .serializers import IngredientSerialiser
+from .models import Ingredient, Tag
+from .serializers import IngredientSerializer, TagSerializer
+
+
+class TagViewSet(viewsets.ModelViewSet):
+    queryset = Tag.objects.all()
+    serializer_class = TagSerializer
 
 
 class IngredientViewSet(viewsets.ModelViewSet):
     queryset = Ingredient.objects.all()
-    serializer_class = IngredientSerialiser
+    serializer_class = IngredientSerializer
     filter_backends = (filters.SearchFilter,)
     search_fields = ('^name',)
 
@@ -30,6 +34,6 @@ def loaddata(request):
             print(ingredients_data['name'])
     print('___ end load data ___')
     queryset = Ingredient.objects.all()
-    serializer = IngredientSerialiser(queryset, many=True)
+    serializer = IngredientSerializer(queryset, many=True)
     return Response(serializer.data)
 
