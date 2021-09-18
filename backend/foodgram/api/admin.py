@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Ingredient, Tag
+from .models import Ingredient, Recipe, Tag
 
 
 class IngredientAdmin(admin.ModelAdmin):
@@ -14,5 +14,10 @@ class TagAdmin(admin.ModelAdmin):
     list_filter = ('name', 'color', 'slug')
 
 
+class RecipeAdmin(admin.ModelAdmin):
+    list_filter = ('author', 'name', 'tag')
+
+
 admin.site.register(Ingredient, IngredientAdmin)
 admin.site.register(Tag, TagAdmin)
+admin.site.register(Recipe, RecipeAdmin)
