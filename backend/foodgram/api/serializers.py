@@ -5,6 +5,7 @@ from rest_framework import serializers
 from users.serializers import UserSerializer
 
 from .models import Component, Ingredient, Recipe, Tag
+from users.models import Follow
 
 
 class IngredientSerializer(serializers.ModelSerializer):
@@ -22,17 +23,29 @@ class TagSerializer(serializers.ModelSerializer):
 
 
 class ComponentSerializer(serializers.ModelSerializer):
+    id = serializers.PrimaryKeyRelatedField(
+        source='ingredient',
+        queryset=Ingredient.objects.all(),
+    )
+    # ingredient = serializers.StringRelatedField(
+    #     read_only=True
+    # )
 
     class Meta:
         model = Component
-        # fields = ('id', 'ingredient', 'ammount')
-        fields = '__all__'
+        fields = (
+            'id',
+            'ingredient',
+            'ammount',
+        )
+        # fields = '__all__'
 
 
 class RecipeSerializer(serializers.ModelSerializer):
     tags = TagSerializer(read_only=True, many=True, source='tag')
     author = UserSerializer(read_only=True)
-    ingredients = ComponentSerializer(read_only=True, many=True)
+    ingredients = ComponentSerializer(many=True)
+    # is_favorited = serializers.SerializerMethodField()
 
     class Meta:
         model = Recipe
@@ -41,8 +54,13 @@ class RecipeSerializer(serializers.ModelSerializer):
             'tags',
             'author',
             'ingredients',  # add is_fav and is_shop
+            # 'is_favorited',
             'name',
             'image',
             'text',
             'cooking_time'
         )
+
+    # def get_is_favorited(self, obj):
+    #     user = self.context.get('request').user
+    #     return Follow.objects.filter(user=user, following=obj).exists()

@@ -4,8 +4,8 @@ from rest_framework import filters, viewsets
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-from .models import Ingredient, Recipe, Tag
-from .serializers import IngredientSerializer, RecipeSerializer, TagSerializer
+from .models import Component, Ingredient, Recipe, Tag
+from .serializers import ComponentSerializer, IngredientSerializer, RecipeSerializer, TagSerializer
 
 
 class RecipeViewSet(viewsets.ModelViewSet):
@@ -36,9 +36,14 @@ def loaddata(request):
                 name=ingredients_data['name'],
                 measurement_unit=ingredients_data['measurement_unit']
             )
-            print(ingredients_data['name'])
+            # print(ingredients_data['name'])
     print('___ end load data ___')
     queryset = Ingredient.objects.all()
     serializer = IngredientSerializer(queryset, many=True)
     return Response(serializer.data)
+
+
+class ComponentViewSet(viewsets.ModelViewSet):
+    queryset = Component.objects.all()
+    serializer_class = ComponentSerializer
 

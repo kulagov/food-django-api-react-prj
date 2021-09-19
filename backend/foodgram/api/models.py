@@ -51,7 +51,8 @@ class Recipe(models.Model):
     )
     ingredients = models.ManyToManyField(
         Ingredient,
-        through='Component'
+        through='Component',
+        related_name='ingredients',
     )
 
     def __str__(self):
@@ -68,7 +69,8 @@ class Component(models.Model):
         on_delete=models.CASCADE,
     )
     ammount = models.IntegerField(
-        validators=[validate_int_field]
+        validators=[validate_int_field],
+        default=1,
     )
 
 

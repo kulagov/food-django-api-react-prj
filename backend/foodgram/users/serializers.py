@@ -21,13 +21,8 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
 
     def get_is_subscribed(self, obj):
-        # follower = get_object_or_404(obj.follow, id=self.context['request'].user.id)
-        # return follower.user == self.context['request'].user
-        try:
-            out = self.context['request'].user.follower.all().get(following=obj)
-            return True
-        except:
-            return False
+        user = self.context['request'].user
+        return Follow.objects.filter(user=user, following=obj).exists()
 
 
 class CustomUserCreateSerializer(UserCreateSerializer):

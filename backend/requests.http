@@ -2,17 +2,39 @@ POST http://127.0.0.1:8000/api/users/
 Content-Type: application/json
 
 {
-    "email": "am@mn.com",
-    "username": "user7",
+    "email": "user@mn.com",
+    "username": "user1",
     "password": "passwwors1",
     "first_name": "user6first",
     "last_name": "user6last"
 }
 
 ###
+GET http://127.0.0.1:8000/api/components/
+Content-Type: application/json
+Authorization: Token 061bf1595d6641d2ed1323d3058277c460e5f70f
+
+
+
+###
+GET http://127.0.0.1:8000/api/recipes/
+Content-Type: application/json
+Authorization: Token 061bf1595d6641d2ed1323d3058277c460e5f70f
+
+###
+GET http://127.0.0.1:8000/api/loaddata/
+Content-Type: application/json
+Authorization: Token 061bf1595d6641d2ed1323d3058277c460e5f70f
+
+###
+GET http://127.0.0.1:8000/api/tags/
+Content-Type: application/json
+Authorization: Token 061bf1595d6641d2ed1323d3058277c460e5f70f
+
+
 ###
 GET http://127.0.0.1:8000/api/users/
-Authorization: Token 03c3786a9be381375e00fb3bd9df13dfb7078d49
+Authorization: Token 061bf1595d6641d2ed1323d3058277c460e5f70f
 
 
 ###
@@ -26,17 +48,17 @@ Content-Type: application/json
 
 ###
 POST http://127.0.0.1:8000/users/token/logout/
-Authorization: Token 8df1d3cf0cb2ee3ab1e1fe189cb7db745d06a78a
+Authorization: Token 061bf1595d6641d2ed1323d3058277c460e5f70f
 
 # ###
 # admin token
 
-# auth_token": "03c3786a9be381375e00fb3bd9df13dfb7078d49
+# auth_token": "061bf1595d6641d2ed1323d3058277c460e5f70f
 
 # ###
 ###
 POST http://127.0.0.1:8000/users/users/set_password/
-Authorization: Token 81c12ff199a23757a6ecd3d72ea22036ff225588
+Authorization: Token 061bf1595d6641d2ed1323d3058277c460e5f70f
 Content-Type: application/json
 
 {
@@ -47,27 +69,27 @@ Content-Type: application/json
 ###
 GET http://127.0.0.1:8000/api/users/subscriptions/
 Content-Type: application/json
-Authorization: Token 03c3786a9be381375e00fb3bd9df13dfb7078d49
+Authorization: Token 061bf1595d6641d2ed1323d3058277c460e5f70f
 
 ###
 GET http://127.0.0.1:8000/api/users/3/subscribe/
 Content-Type: application/json
-Authorization: Token 03c3786a9be381375e00fb3bd9df13dfb7078d49
+Authorization: Token 061bf1595d6641d2ed1323d3058277c460e5f70f
 
 ###
 DELETE http://127.0.0.1:8000/api/users/3/subscribe/
 Content-Type: application/json
-Authorization: Token 03c3786a9be381375e00fb3bd9df13dfb7078d49
+Authorization: Token 061bf1595d6641d2ed1323d3058277c460e5f70f
 
 
 ###
 GET http://127.0.0.1:8000/api/users/me/
 Content-Type: application/json
-Authorization: Token 03c3786a9be381375e00fb3bd9df13dfb7078d49
+Authorization: Token 061bf1595d6641d2ed1323d3058277c460e5f70f
 
 
 
 ###
-GET http://127.0.0.1:8000/api/ingredients/?search=сах
+GET http://127.0.0.1:8000/api/ingredients/
 Content-Type: application/json
-Authorization: Token 03c3786a9be381375e00fb3bd9df13dfb7078d49
+Authorization: Token 061bf1595d6641d2ed1323d3058277c460e5f70f
