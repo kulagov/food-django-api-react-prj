@@ -2,10 +2,10 @@ from django.db import models
 from django.db.models import fields
 from django.db.models.base import Model
 from rest_framework import serializers
+from users.models import Follow
 from users.serializers import UserSerializer
 
 from .models import Component, Ingredient, Recipe, Tag
-from users.models import Follow
 
 
 class IngredientSerializer(serializers.ModelSerializer):
@@ -27,16 +27,22 @@ class ComponentSerializer(serializers.ModelSerializer):
         source='ingredient',
         queryset=Ingredient.objects.all(),
     )
-    # ingredient = serializers.StringRelatedField(
-    #     read_only=True
-    # )
+    name = serializers.StringRelatedField(
+        read_only=True,
+        source='ingredient'
+    )
+    measurement_unit = serializers.StringRelatedField(
+        read_only=True,
+        source='ingredient'
+    )
 
     class Meta:
         model = Component
         fields = (
             'id',
-            'ingredient',
-            'ammount',
+            'name',
+            'measurement_unit',
+            'amount',
         )
         # fields = '__all__'
 
@@ -44,8 +50,7 @@ class ComponentSerializer(serializers.ModelSerializer):
 class RecipeSerializer(serializers.ModelSerializer):
     tags = TagSerializer(read_only=True, many=True, source='tag')
     author = UserSerializer(read_only=True)
-    ingredients = ComponentSerializer(many=True)
-    # is_favorited = serializers.SerializerMethodField()
+    ingredients = ComponentSerializer(many=True, source='components')
 
     class Meta:
         model = Recipe
@@ -53,8 +58,9 @@ class RecipeSerializer(serializers.ModelSerializer):
             'id',
             'tags',
             'author',
-            'ingredients',  # add is_fav and is_shop
+            'ingredients',
             # 'is_favorited',
+            # 'is_in_shopping_cart',
             'name',
             'image',
             'text',

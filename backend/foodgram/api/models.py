@@ -63,12 +63,13 @@ class Component(models.Model):
     recipe = models.ForeignKey(
         Recipe,
         on_delete=models.CASCADE,
+        related_name='components'
     )
     ingredient = models.ForeignKey(
         Ingredient,
         on_delete=models.CASCADE,
     )
-    ammount = models.IntegerField(
+    amount = models.IntegerField(
         validators=[validate_int_field],
         default=1,
     )
