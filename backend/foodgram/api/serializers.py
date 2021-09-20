@@ -1,6 +1,7 @@
 from django.db import models
 from django.db.models import fields
 from django.db.models.base import Model
+from django.shortcuts import get_object_or_404
 from rest_framework import serializers
 from users.models import Follow
 from users.serializers import UserSerializer
@@ -81,14 +82,8 @@ class RecipeSerializer(serializers.ModelSerializer):
         user = self.context['request'].user
         recipe = Recipe.objects.create(**validated_data, author=user)
 
-        for ingredient in ingredients:
-            Component.objects.create(
-                recipe=recipe,
-                ingredient=ingredient['ingredient'],
-                amount=ingredient['amount']
-            )
-        for tag in tags:
-            recipe.tags.add(Tag.objects.get(id=tag['id']))
+        self.add_tags_and_components(recipe, ingredients, tags)
+
         return recipe
 
     def update(self, instance, validated_data):
@@ -97,13 +92,25 @@ class RecipeSerializer(serializers.ModelSerializer):
         user = self.context['request'].user
         if user != instance.author:
             raise serializers.ValidationError('user != author')
-        # Recipe.objects.filter(id=instance.id).update(**validated_data)
 
         for attr, value in validated_data.items():
             setattr(instance, attr, value)
 
-        # for ingredient in ingredients:
+        instance.ingredients.clear()
+        instance.tags.clear()
 
+        self.add_tags_and_components(instance, ingredients, tags)
 
         instance.save()
         return instance
+
+    def add_tags_and_components(self, instance, ingredients, tags):
+        for ingredient in ingredients:
+            Component.objects.create(
+                recipe=instance,
+                ingredient=ingredient['ingredient'],
+                amount=ingredient['amount']
+            )
+        for tag in tags:
+            new_tag = get_object_or_404(Tag, id=tag['id'])
+            instance.tags.add(new_tag)
