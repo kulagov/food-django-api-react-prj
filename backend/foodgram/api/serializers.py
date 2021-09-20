@@ -72,20 +72,64 @@ class RecipeSerializer(serializers.ModelSerializer):
             # 'image': {'required': True},
         }
 
+
+class ComponentSerializerCreate(serializers.ModelSerializer):
+    id = serializers.PrimaryKeyRelatedField(
+        source='ingredient',
+        queryset=Ingredient.objects.all(),
+    )
+    class Meta:
+        model = Component
+        fields = (
+            'id',
+            'amount'
+        )
+
+
+class RecipeSerializerCreate(serializers.ModelSerializer):
+    # ingredients = serializers.PrimaryKeyRelatedField(
+    #     queryset=Ingredient.objects.all(),
+    #     many=True,
+    #     source='components',
+    # )
+    ingredients = ComponentSerializerCreate(many=True, source='components')
+    # tags = TagSerializer(many=True, read_only=True)
+    # author = UserSerializer(read_only=True)
+
+    class Meta:
+        model = Recipe
+        fields = (
+            'ingredients',
+            'tags',
+            # 'is_favorited',
+            # 'is_in_shopping_cart',
+            'image',
+            'name',
+            'text',
+            'cooking_time'
+        )
+        extra_kwargs = {
+            'text': {'required': True},
+            'cooking_time': {'required': True},
+            # 'image': {'required': True},
+            # 'ingredients': {'required': True},
+        }
+
     # def get_is_favorited(self, obj):
     #     user = self.context.get('request').user
     #     return Follow.objects.filter(user=user, following=obj).exists()
 
     def create(self, validated_data):
         ingredients = validated_data.pop('components')
-        tags = self.initial_data['tags']
+        # tags = self.initial_data['tags']
+        tags = validated_data.pop('tags')
         user = self.context['request'].user
         recipe = Recipe.objects.create(**validated_data, author=user)
 
         self.add_tags_and_components(recipe, ingredients, tags)
 
         return recipe
-
+### need rebuild update same create !!!!!!!!
     def update(self, instance, validated_data):
         ingredients = validated_data.pop('components')
         tags = self.initial_data['tags']
@@ -104,13 +148,13 @@ class RecipeSerializer(serializers.ModelSerializer):
         instance.save()
         return instance
 
-    def add_tags_and_components(self, instance, ingredients, tags):
+    def add_tags_and_components(self, obj, ingredients, tags):
         for ingredient in ingredients:
             Component.objects.create(
-                recipe=instance,
+                recipe=obj,
                 ingredient=ingredient['ingredient'],
                 amount=ingredient['amount']
             )
         for tag in tags:
-            new_tag = get_object_or_404(Tag, id=tag['id'])
-            instance.tags.add(new_tag)
+            new_tag = get_object_or_404(Tag, id=tag.id)
+            obj.tags.add(new_tag)

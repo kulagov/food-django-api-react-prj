@@ -5,12 +5,19 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from .models import Component, Ingredient, Recipe, Tag
-from .serializers import ComponentSerializer, IngredientSerializer, RecipeSerializer, TagSerializer
+from .serializers import (ComponentSerializer, IngredientSerializer,
+                          RecipeSerializer, RecipeSerializerCreate,
+                          TagSerializer)
 
 
 class RecipeViewSet(viewsets.ModelViewSet):
     queryset = Recipe.objects.all()
     serializer_class = RecipeSerializer
+
+    def get_serializer_class(self):
+        if self.action in ['update', 'create']:
+            return RecipeSerializerCreate
+        return RecipeSerializer
 
 
 class TagViewSet(viewsets.ReadOnlyModelViewSet):
