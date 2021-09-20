@@ -43,7 +43,7 @@ class Recipe(models.Model):
         blank=True
     )
     text = models.TextField('text', blank=True)
-    tag = models.ManyToManyField(Tag, related_name='recipes', blank=True)
+    tags = models.ManyToManyField(Tag, related_name='recipes', blank=True)
     cooking_time = models.IntegerField(
         'cooking time',
         validators=[validate_int_field],

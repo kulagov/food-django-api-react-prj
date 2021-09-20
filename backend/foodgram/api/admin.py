@@ -21,7 +21,7 @@ class ComponentInline(admin.TabularInline):
 
 
 class RecipeAdmin(admin.ModelAdmin):
-    list_filter = ('author', 'name', 'tag')
+    list_filter = ('author', 'name', 'tags')
     inlines = [ComponentInline, ]
 
 

@@ -44,11 +44,10 @@ class ComponentSerializer(serializers.ModelSerializer):
             'measurement_unit',
             'amount',
         )
-        # fields = '__all__'
 
 
 class RecipeSerializer(serializers.ModelSerializer):
-    tags = TagSerializer(read_only=True, many=True, source='tag')
+    tags = TagSerializer(read_only=True, many=True)
     author = UserSerializer(read_only=True)
     ingredients = ComponentSerializer(many=True, source='components')
 
@@ -70,3 +69,19 @@ class RecipeSerializer(serializers.ModelSerializer):
     # def get_is_favorited(self, obj):
     #     user = self.context.get('request').user
     #     return Follow.objects.filter(user=user, following=obj).exists()
+
+    def create(self, validated_data):
+        ingredients = validated_data.pop('components')
+        tags = self.initial_data['tags']
+        user = self.context['request'].user
+        recipe = Recipe.objects.create(**validated_data, author=user)
+
+        for ingredient in ingredients:
+            Component.objects.create(
+                recipe=recipe,
+                ingredient=ingredient['ingredient'],
+                amount=ingredient['amount']
+            )
+        for tag in tags:
+            recipe.tags.add(Tag.objects.get(id=tag['id']))
+        return recipe
