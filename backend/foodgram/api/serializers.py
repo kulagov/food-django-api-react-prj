@@ -47,24 +47,29 @@ class ComponentSerializer(serializers.ModelSerializer):
 
 
 class RecipeSerializer(serializers.ModelSerializer):
-    tags = TagSerializer(read_only=True, many=True)
-    author = UserSerializer(read_only=True)
     ingredients = ComponentSerializer(many=True, source='components')
+    tags = TagSerializer(many=True, read_only=True)
+    author = UserSerializer(read_only=True)
 
     class Meta:
         model = Recipe
         fields = (
             'id',
-            'tags',
             'author',
             'ingredients',
+            'tags',
             # 'is_favorited',
             # 'is_in_shopping_cart',
-            'name',
             'image',
+            'name',
             'text',
             'cooking_time'
         )
+        extra_kwargs = {
+            'text': {'required': True},
+            'cooking_time': {'required': True},
+            # 'image': {'required': True},
+        }
 
     # def get_is_favorited(self, obj):
     #     user = self.context.get('request').user
@@ -85,3 +90,20 @@ class RecipeSerializer(serializers.ModelSerializer):
         for tag in tags:
             recipe.tags.add(Tag.objects.get(id=tag['id']))
         return recipe
+
+    def update(self, instance, validated_data):
+        ingredients = validated_data.pop('components')
+        tags = self.initial_data['tags']
+        user = self.context['request'].user
+        if user != instance.author:
+            raise serializers.ValidationError('user != author')
+        # Recipe.objects.filter(id=instance.id).update(**validated_data)
+
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+
+        # for ingredient in ingredients:
+
+
+        instance.save()
+        return instance

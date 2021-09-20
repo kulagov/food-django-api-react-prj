@@ -26,6 +26,8 @@ POST http://127.0.0.1:8000/api/recipes/
 Content-Type: application/json
 Authorization: Token 786e678509044550e03d6adf1af2c4c3b28b7d9d
 
+
+###
 {
     "ingredients":[
         {
@@ -34,13 +36,42 @@ Authorization: Token 786e678509044550e03d6adf1af2c4c3b28b7d9d
     ],
     "tags":[
         {
-            "id": 2
+            "id": 1
         }
     ],
     "name": "wohou",
     "text": "text wohou",
     "cooking_time": 4040
 }
+
+
+###
+GET http://127.0.0.1:8000/api/recipes/2/
+Content-Type: application/json
+Authorization: Token 786e678509044550e03d6adf1af2c4c3b28b7d9d
+
+###
+PUT http://127.0.0.1:8000/api/recipes/2/
+Content-Type: application/json
+Authorization: Token 786e678509044550e03d6adf1af2c4c3b28b7d9d
+
+{
+    "ingredients":[
+        {
+        "id": 1,
+        "amount": 10}
+    ],
+    "tags":[
+        {
+            "id": 1
+        }
+    ],
+    "name": "new1  wohou",
+    "text": "new1 text wohou",
+    "cooking_time": 29993
+}
+
+
 
 ###
 GET http://127.0.0.1:8000/api/recipes/1/
