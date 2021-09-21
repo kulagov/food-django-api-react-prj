@@ -121,7 +121,6 @@ class RecipeSerializerCreate(serializers.ModelSerializer):
 
     def create(self, validated_data):
         ingredients = validated_data.pop('components')
-        # tags = self.initial_data['tags']
         tags = validated_data.pop('tags')
         user = self.context['request'].user
         recipe = Recipe.objects.create(**validated_data, author=user)
@@ -129,10 +128,10 @@ class RecipeSerializerCreate(serializers.ModelSerializer):
         self.add_tags_and_components(recipe, ingredients, tags)
 
         return recipe
-### need rebuild update same create !!!!!!!!
+
     def update(self, instance, validated_data):
         ingredients = validated_data.pop('components')
-        tags = self.initial_data['tags']
+        tags = validated_data.pop('tags')
         user = self.context['request'].user
         if user != instance.author:
             raise serializers.ValidationError('user != author')
