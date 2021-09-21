@@ -6,7 +6,7 @@ from rest_framework import serializers
 from users.models import Follow
 from users.serializers import UserSerializer
 
-from .models import Component, Ingredient, Recipe, Tag
+from .models import Component, Ingredient, Recipe, Tag, ShoppingList
 
 
 class IngredientSerializer(serializers.ModelSerializer):
@@ -14,6 +14,18 @@ class IngredientSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ingredient
         fields = ('id', 'name', 'measurement_unit')
+
+
+class ShoppingAddSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Recipe
+        fields = (
+            'id',
+            'name',
+            'image',
+            'cooking_time'
+        )
 
 
 class TagSerializer(serializers.ModelSerializer):
@@ -78,6 +90,7 @@ class ComponentSerializerCreate(serializers.ModelSerializer):
         source='ingredient',
         queryset=Ingredient.objects.all(),
     )
+
     class Meta:
         model = Component
         fields = (
@@ -95,6 +108,7 @@ class RecipeSerializerCreate(serializers.ModelSerializer):
     ingredients = ComponentSerializerCreate(many=True, source='components')
     # tags = TagSerializer(many=True, read_only=True)
     # author = UserSerializer(read_only=True)
+    is_in_shopping_cart = serializers.SerializerMethodField()
 
     class Meta:
         model = Recipe
@@ -102,7 +116,7 @@ class RecipeSerializerCreate(serializers.ModelSerializer):
             'ingredients',
             'tags',
             # 'is_favorited',
-            # 'is_in_shopping_cart',
+            'is_in_shopping_cart',
             'image',
             'name',
             'text',
@@ -118,6 +132,9 @@ class RecipeSerializerCreate(serializers.ModelSerializer):
     # def get_is_favorited(self, obj):
     #     user = self.context.get('request').user
     #     return Follow.objects.filter(user=user, following=obj).exists()
+
+    def get_is_in_shopping_cart(self, obj):
+        return True
 
     def create(self, validated_data):
         ingredients = validated_data.pop('components')

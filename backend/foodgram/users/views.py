@@ -31,12 +31,12 @@ class CustomUserViewSet(UserViewSet):
     def subscribe(self, request, id=None):
         queryset = User.objects.all()
         follow = get_object_or_404(queryset, id=id)
-        if request.method == "GET":
+        if request.method == 'GET':
             Follow.objects.get_or_create(
                 user=request.user,
                 following=follow,
             )
-        elif request.method == "DELETE":
+        elif request.method == 'DELETE':
             try:
                 following = Follow.objects.get(
                     user=request.user,
