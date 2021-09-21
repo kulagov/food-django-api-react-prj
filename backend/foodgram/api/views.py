@@ -1,16 +1,17 @@
 import json
-from django.db import models
-from rest_framework import status
-from rest_framework import filters, mixins, viewsets
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
-from rest_framework.decorators import action
-# from django.shortcuts import get
 
-from .models import Component, Ingredient, Recipe, ShoppingList, Tag
+from django.db import models
+from rest_framework import filters, mixins, status, viewsets
+from rest_framework.decorators import action, api_view
+from rest_framework.response import Response
+
+from .models import Component, Favorite, Ingredient, Recipe, ShoppingList, Tag
 from .serializers import (ComponentSerializer, IngredientSerializer,
                           RecipeSerializer, RecipeSerializerCreate,
-                          TagSerializer, ShoppingAddSerializer)
+                          ShopAndFavoriteSerializer, TagSerializer)
+
+# from django.shortcuts import get
+
 
 
 class ListDeleteViewSet(mixins.ListModelMixin,
@@ -20,7 +21,7 @@ class ListDeleteViewSet(mixins.ListModelMixin,
     pass
 
 
-# class RecipeViewSet(ListDeleteViewSet):
+# class RecipeViewSet(ListDeleteViewSet)
 class RecipeViewSet(viewsets.ModelViewSet):
     queryset = Recipe.objects.all()
     serializer_class = RecipeSerializer
@@ -31,13 +32,13 @@ class RecipeViewSet(viewsets.ModelViewSet):
         return RecipeSerializer
 
     @action(methods=['get', 'delete'], detail=True)
-    def shoppinglist(self, request, pk=None):
+    def shopping_cart(self, request, pk=None):
         if request.method == 'GET':
             ShoppingList.objects.get_or_create(
                 user=request.user,
                 recipe=self.get_object())
 
-        serializer = ShoppingAddSerializer(self.get_object())
+        serializer = ShopAndFavoriteSerializer(self.get_object())
 
         if (request.method == 'DELETE'
             and ShoppingList.objects.filter(
@@ -49,7 +50,30 @@ class RecipeViewSet(viewsets.ModelViewSet):
                 user=request.user,
                 recipe=self.get_object()
             ).delete()
-            return Response(serializer.data, status=status.HTTP_204_NO_CONTENT)
+            return Response(status=status.HTTP_204_NO_CONTENT)
+
+        return Response(serializer.data)
+
+    @action(methods=['get', 'delete'], detail=True)
+    def favorite(self, request, pk=None):
+        if request.method == 'GET':
+            Favorite.objects.get_or_create(
+                user=request.user,
+                recipe=self.get_object())
+
+        serializer = ShopAndFavoriteSerializer(self.get_object())
+
+        if (request.method == 'DELETE'
+            and Favorite.objects.filter(
+                user=request.user,
+                recipe=self.get_object()
+            ).exists()
+        ):
+            Favorite.objects.get(
+                user=request.user,
+                recipe=self.get_object()
+            ).delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
 
         return Response(serializer.data)
 

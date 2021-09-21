@@ -6,7 +6,7 @@ from rest_framework import serializers
 from users.models import Follow
 from users.serializers import UserSerializer
 
-from .models import Component, Ingredient, Recipe, ShoppingList, Tag
+from .models import Component, Favorite, Ingredient, Recipe, ShoppingList, Tag
 
 
 class IngredientSerializer(serializers.ModelSerializer):
@@ -16,7 +16,7 @@ class IngredientSerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'measurement_unit')
 
 
-class ShoppingAddSerializer(serializers.ModelSerializer):
+class ShopAndFavoriteSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Recipe

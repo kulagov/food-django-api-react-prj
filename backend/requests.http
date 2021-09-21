@@ -46,12 +46,22 @@ Content-Type: application/json
 Authorization: Token 1dea1e3d4b53ed5c13a4eebd0b40600978e685ff
 
 ###
-GET http://127.0.0.1:8000/api/recipes/6/shoppinglist/
+GET http://127.0.0.1:8000/api/recipes/6/shopping_cart/
 Content-Type: application/json
 Authorization: Token 1dea1e3d4b53ed5c13a4eebd0b40600978e685ff
 
 ###
-DELETE http://127.0.0.1:8000/api/recipes/1/shoppinglist/
+DELETE http://127.0.0.1:8000/api/recipes/6/shopping_cart/
+Content-Type: application/json
+Authorization: Token 1dea1e3d4b53ed5c13a4eebd0b40600978e685ff
+
+###
+GET http://127.0.0.1:8000/api/recipes/6/favorite/
+Content-Type: application/json
+Authorization: Token 1dea1e3d4b53ed5c13a4eebd0b40600978e685ff
+
+###
+DELETE http://127.0.0.1:8000/api/recipes/7/favorite/
 Content-Type: application/json
 Authorization: Token 1dea1e3d4b53ed5c13a4eebd0b40600978e685ff
 
