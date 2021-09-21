@@ -6,7 +6,7 @@ from rest_framework import serializers
 from users.models import Follow
 from users.serializers import UserSerializer
 
-from .models import Component, Ingredient, Recipe, Tag, ShoppingList
+from .models import Component, Ingredient, Recipe, ShoppingList, Tag
 
 
 class IngredientSerializer(serializers.ModelSerializer):
@@ -86,7 +86,10 @@ class RecipeSerializer(serializers.ModelSerializer):
         }
 
     def get_is_in_shopping_cart(self, obj):
-        return True
+        return ShoppingList.objects.filter(
+            user=self.context['request'].user,
+            recipe=obj
+        ).exists()
 
 
 class ComponentSerializerCreate(serializers.ModelSerializer):
@@ -104,22 +107,13 @@ class ComponentSerializerCreate(serializers.ModelSerializer):
 
 
 class RecipeSerializerCreate(serializers.ModelSerializer):
-    # ingredients = serializers.PrimaryKeyRelatedField(
-    #     queryset=Ingredient.objects.all(),
-    #     many=True,
-    #     source='components',
-    # )
     ingredients = ComponentSerializerCreate(many=True, source='components')
-    # tags = TagSerializer(many=True, read_only=True)
-    # author = UserSerializer(read_only=True)
 
     class Meta:
         model = Recipe
         fields = (
             'ingredients',
             'tags',
-            # 'is_favorited',
-            'is_in_shopping_cart',
             'image',
             'name',
             'text',
@@ -128,13 +122,8 @@ class RecipeSerializerCreate(serializers.ModelSerializer):
         extra_kwargs = {
             'text': {'required': True},
             'cooking_time': {'required': True},
-            # 'image': {'required': True},
-            # 'ingredients': {'required': True},
         }
 
-    # def get_is_favorited(self, obj):
-    #     user = self.context.get('request').user
-    #     return Follow.objects.filter(user=user, following=obj).exists()
 
     def create(self, validated_data):
         ingredients = validated_data.pop('components')
