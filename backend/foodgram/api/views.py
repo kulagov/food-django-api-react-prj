@@ -20,8 +20,8 @@ class ListDeleteViewSet(mixins.ListModelMixin,
     pass
 
 
-class RecipeViewSet(ListDeleteViewSet):
-# class RecipeViewSet(viewsets.ModelViewSet):
+# class RecipeViewSet(ListDeleteViewSet):
+class RecipeViewSet(viewsets.ModelViewSet):
     queryset = Recipe.objects.all()
     serializer_class = RecipeSerializer
 

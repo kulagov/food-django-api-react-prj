@@ -63,6 +63,7 @@ class RecipeSerializer(serializers.ModelSerializer):
     ingredients = ComponentSerializer(many=True, source='components')
     tags = TagSerializer(many=True, read_only=True)
     author = UserSerializer(read_only=True)
+    is_in_shopping_cart = serializers.SerializerMethodField()
 
     class Meta:
         model = Recipe
@@ -72,7 +73,7 @@ class RecipeSerializer(serializers.ModelSerializer):
             'ingredients',
             'tags',
             # 'is_favorited',
-            # 'is_in_shopping_cart',
+            'is_in_shopping_cart',
             'image',
             'name',
             'text',
@@ -83,6 +84,9 @@ class RecipeSerializer(serializers.ModelSerializer):
             'cooking_time': {'required': True},
             # 'image': {'required': True},
         }
+
+    def get_is_in_shopping_cart(self, obj):
+        return True
 
 
 class ComponentSerializerCreate(serializers.ModelSerializer):
@@ -108,7 +112,6 @@ class RecipeSerializerCreate(serializers.ModelSerializer):
     ingredients = ComponentSerializerCreate(many=True, source='components')
     # tags = TagSerializer(many=True, read_only=True)
     # author = UserSerializer(read_only=True)
-    is_in_shopping_cart = serializers.SerializerMethodField()
 
     class Meta:
         model = Recipe
@@ -132,9 +135,6 @@ class RecipeSerializerCreate(serializers.ModelSerializer):
     # def get_is_favorited(self, obj):
     #     user = self.context.get('request').user
     #     return Follow.objects.filter(user=user, following=obj).exists()
-
-    def get_is_in_shopping_cart(self, obj):
-        return True
 
     def create(self, validated_data):
         ingredients = validated_data.pop('components')
