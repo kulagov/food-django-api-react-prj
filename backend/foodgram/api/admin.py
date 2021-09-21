@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.db import models
 
-from .models import Ingredient, Recipe, Tag, Component
+from .models import Ingredient, Recipe, Tag, Component, ShoppingList
 
 
 class IngredientAdmin(admin.ModelAdmin):
@@ -25,6 +25,12 @@ class RecipeAdmin(admin.ModelAdmin):
     inlines = [ComponentInline, ]
 
 
+class ShoppingListAdmin(admin.ModelAdmin):
+    list_display = ('id', 'user', 'recipe')
+    list_filter = ('user', 'recipe')
+
+
 admin.site.register(Ingredient, IngredientAdmin)
 admin.site.register(Tag, TagAdmin)
 admin.site.register(Recipe, RecipeAdmin)
+admin.site.register(ShoppingList, ShoppingListAdmin)
