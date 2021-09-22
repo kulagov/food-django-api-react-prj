@@ -8,11 +8,17 @@ services:
     env_file:
       - ./backend/foodgram/.env
   web:
-    image: kulagov/foodgram:latest
+    # image: kulagov/foodgram:latest
+    build: ./backend/foodgram
+    # expose:
+    #   - "8000"
     restart: always
     volumes: 
       - static_value:/code/static/
       - media_value:/code/media/
+    # command: gunicorn foodgram.wsgi:application --bind 0.0.0.0:8000
+    ports:
+      - "8000:8000"
     depends_on:
       - db
     env_file:
@@ -24,6 +30,8 @@ services:
       dockerfile: Dockerfile
     volumes:
       - ./frontend/:/app/result_build/
+    depends_on: 
+      - web
 
   nginx:
     image: nginx:1.19.3
@@ -38,7 +46,6 @@ services:
       - media_value:/var/html/media/
 
     depends_on: 
-      - web
       - frontend
 
 volumes:
