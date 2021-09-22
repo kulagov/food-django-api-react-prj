@@ -124,7 +124,6 @@ class RecipeSerializerCreate(serializers.ModelSerializer):
             'cooking_time': {'required': True},
         }
 
-
     def create(self, validated_data):
         ingredients = validated_data.pop('components')
         tags = validated_data.pop('tags')

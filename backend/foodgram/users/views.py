@@ -12,7 +12,6 @@ from .serializers import UserSerializer
 
 
 class CustomUserViewSet(UserViewSet):
-# class CustomUserViewSet(ModelViewSet):
     serializer_class = UserSerializer
 
     @action(['get'], detail=False)
@@ -21,7 +20,7 @@ class CustomUserViewSet(UserViewSet):
         serializer = self.get_serializer(follower, many=True)
         return Response(serializer.data)
 
-    @action(['get'], detail=False) ## что-то с переопределением не так
+    @action(['get'], detail=False)
     def me(self, request):
         user = User.objects.get(id=request.user.id)
         serializer = self.get_serializer(user)
@@ -43,7 +42,7 @@ class CustomUserViewSet(UserViewSet):
                     following=follow
                 )
                 following.delete()
-            except:
+            except Exception:
                 return Response(
                     {'errors': 'Вы не подписаны на этого пользователя', },
                     status.HTTP_400_BAD_REQUEST
@@ -56,5 +55,3 @@ class ListOrCreateViewSet(mixins.CreateModelMixin,
                           mixins.ListModelMixin,
                           GenericViewSet):
     pass
-
-

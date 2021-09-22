@@ -10,9 +10,6 @@ from .serializers import (ComponentSerializer, IngredientSerializer,
                           RecipeSerializer, RecipeSerializerCreate,
                           ShopAndFavoriteSerializer, TagSerializer)
 
-# from django.shortcuts import get
-
-
 
 class ListDeleteViewSet(mixins.ListModelMixin,
                         mixins.RetrieveModelMixin,
@@ -40,12 +37,9 @@ class RecipeViewSet(viewsets.ModelViewSet):
 
         serializer = ShopAndFavoriteSerializer(self.get_object())
 
-        if (request.method == 'DELETE'
-            and ShoppingList.objects.filter(
-                user=request.user,
-                recipe=self.get_object()
-            ).exists()
-        ):
+        flag = ShoppingList.objects.filter(user=request.user,
+                                           recipe=self.get_object()).exists()
+        if (request.method == 'DELETE' and flag):
             ShoppingList.objects.get(
                 user=request.user,
                 recipe=self.get_object()
@@ -63,12 +57,9 @@ class RecipeViewSet(viewsets.ModelViewSet):
 
         serializer = ShopAndFavoriteSerializer(self.get_object())
 
-        if (request.method == 'DELETE'
-            and Favorite.objects.filter(
-                user=request.user,
-                recipe=self.get_object()
-            ).exists()
-        ):
+        flag = Favorite.objects.filter(user=request.user,
+                                       recipe=self.get_object()).exists()
+        if (request.method == 'DELETE' and flag):
             Favorite.objects.get(
                 user=request.user,
                 recipe=self.get_object()
