@@ -1,7 +1,7 @@
 name: foodgram-project-react
 on:
     push:
-    branches: [ master ]
+    branches: [ docker ]
 
 jobs:
   tests:
@@ -58,7 +58,7 @@ jobs:
         stack_file_name: docker-compose.yaml
         script: |
           sudo docker pull ${{ secrets.DOCKER_USERNAME  }}/foodgram:latest
-          sudo docker-compose stop
+          sudo docker stop
           sudo docker-compose rm web
           rm .env
           touch .env

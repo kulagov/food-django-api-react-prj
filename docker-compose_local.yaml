@@ -8,8 +8,8 @@ services:
     env_file:
       - ./backend/foodgram/.env
   web:
-    image: kulagov/foodgram:latest
-    # build: ./backend/foodgram
+    # image: kulagov/foodgram:latest
+    build: ./backend/foodgram
     # expose:
     #   - "8000"
     restart: always
