@@ -1,13 +1,5 @@
 [
 {
-  "model": "authtoken.token",
-  "pk": "ca8a68ba0e0e9a97df97a6b8d6036371c726cc92",
-  "fields": {
-    "user": 1,
-    "created": "2021-09-24T07:02:02.134Z"
-  }
-},
-{
   "model": "api.ingredient",
   "pk": 1,
   "fields": {
