@@ -1,3 +1,7 @@
+import base64
+import uuid
+
+from django.core.files.base import ContentFile
 from django.db import models
 from django.db.models import fields
 from django.db.models.base import Model
@@ -82,7 +86,9 @@ class RecipeSerializer(serializers.ModelSerializer):
         extra_kwargs = {
             'text': {'required': True},
             'cooking_time': {'required': True},
-            # 'image': {'required': True},
+            'ingredients': {'required': True},
+            'tags': {'required': True},
+            'image': {'required': True},
         }
 
     def get_is_in_shopping_cart(self, obj):
@@ -106,8 +112,20 @@ class ComponentSerializerCreate(serializers.ModelSerializer):
         )
 
 
+class Base64ImageField(serializers.ImageField):
+    def to_internal_value(self, data):
+        if isinstance(data, str) and data.startswith('data:image'):
+            format, imgstr = data.split(';base64,')
+            ext = format.split('/')[-1]
+            id = uuid.uuid4()
+            data = ContentFile(
+                base64.b64decode(imgstr), name=id.urn[9:] + '.' + ext)
+        return super(Base64ImageField, self).to_internal_value(data)
+
+
 class RecipeSerializerCreate(serializers.ModelSerializer):
     ingredients = ComponentSerializerCreate(many=True, source='components')
+    image = Base64ImageField(max_length=None, use_url=True)
 
     class Meta:
         model = Recipe
@@ -122,6 +140,9 @@ class RecipeSerializerCreate(serializers.ModelSerializer):
         extra_kwargs = {
             'text': {'required': True},
             'cooking_time': {'required': True},
+            'ingredients': {'required': True},
+            'tags': {'required': True},
+            'image': {'required': True},
         }
 
     def create(self, validated_data):
