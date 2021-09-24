@@ -28,6 +28,11 @@ class RecipeViewSet(viewsets.ModelViewSet):
             return RecipeSerializerCreate
         return RecipeSerializer
 
+    @action(detail=False)
+    def download_shopping_cart(self, request):
+        
+        return Response(status=status.HTTP_410_GONE)
+
     @action(methods=['get', 'delete'], detail=True)
     def shopping_cart(self, request, pk=None):
         if request.method == 'GET':
