@@ -6,7 +6,7 @@ from users.models import User
 
 
 class Ingredient(models.Model):
-    name = models.CharField('name', max_length=50)
+    name = models.CharField('name', max_length=100)
     measurement_unit = models.CharField('measurement unit', max_length=50)
 
     def __str__(self):
