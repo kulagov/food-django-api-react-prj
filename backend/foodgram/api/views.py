@@ -25,7 +25,6 @@ class ListDeleteViewSet(mixins.ListModelMixin,
     pass
 
 
-
 # class RecipeViewSet(ListDeleteViewSet)
 class RecipeViewSet(viewsets.ModelViewSet):
     queryset = Recipe.objects.all()
@@ -38,11 +37,11 @@ class RecipeViewSet(viewsets.ModelViewSet):
 
     @action(detail=False)
     def download_shopping_cart(self, request):
-        ShopListUser = ShoppingList.objects.filter(user=request.user)
+        shop_list_user = ShoppingList.objects.filter(user=request.user)
         shop_list_amount = {}
         shop_list_name = {}
-        for ShopItem in ShopListUser:
-            components = Component.objects.filter(recipe=ShopItem.recipe)
+        for shop_item in shop_list_user:
+            components = Component.objects.filter(recipe=shop_item.recipe)
             for comp_item in components:
                 ingredient_item = comp_item.ingredient
                 amount_item = comp_item.amount
@@ -54,7 +53,8 @@ class RecipeViewSet(viewsets.ModelViewSet):
                     shop_list_name[ingredient_item.id] = ingredient_item
 
         response = HttpResponse(content_type='application/pdf')
-        response['Content-Disposition'] = 'attachment; filename="somefilename.pdf"'
+        response['Content-Disposition'] = (
+            'attachment; filename="somefilename.pdf"')
 
         canvas_blank = canvas.Canvas(response)
         pdfmetrics.registerFont(TTFont('FreeSans', 'FreeSans.ttf'))
