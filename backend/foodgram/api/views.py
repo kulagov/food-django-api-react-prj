@@ -1,14 +1,21 @@
 import json
 
+import reportlab
+
 from django.db import models
+from django.http import HttpResponse
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
+from reportlab.pdfgen import canvas
 from rest_framework import filters, mixins, status, viewsets
 from rest_framework.decorators import action, api_view
 from rest_framework.response import Response
 
 from .models import Component, Favorite, Ingredient, Recipe, ShoppingList, Tag
-from .serializers import (ComponentSerializer, IngredientSerializer,
-                          RecipeSerializer, RecipeSerializerCreate,
-                          ShopAndFavoriteSerializer, TagSerializer)
+from .serializers import (
+    ComponentSerializer, IngredientSerializer, RecipeSerializer,
+    RecipeSerializerCreate, ShopAndFavoriteSerializer, TagSerializer,
+)
 
 
 class ListDeleteViewSet(mixins.ListModelMixin,
@@ -16,6 +23,7 @@ class ListDeleteViewSet(mixins.ListModelMixin,
                         # mixins.DestroyModelMixin,
                         viewsets.GenericViewSet):
     pass
+
 
 
 # class RecipeViewSet(ListDeleteViewSet)
@@ -30,8 +38,40 @@ class RecipeViewSet(viewsets.ModelViewSet):
 
     @action(detail=False)
     def download_shopping_cart(self, request):
-        
-        return Response(status=status.HTTP_410_GONE)
+        ShopListUser = ShoppingList.objects.filter(user=request.user)
+        shop_list_amount = {}
+        shop_list_name = {}
+        for ShopItem in ShopListUser:
+            components = Component.objects.filter(recipe=ShopItem.recipe)
+            for comp_item in components:
+                ingredient_item = comp_item.ingredient
+                amount_item = comp_item.amount
+                if ingredient_item.id in shop_list_amount.keys():
+                    shop_list_amount[ingredient_item.id] = (
+                        shop_list_amount[ingredient_item.id] + amount_item)
+                else:
+                    shop_list_amount[ingredient_item.id] = amount_item
+                    shop_list_name[ingredient_item.id] = ingredient_item
+
+        response = HttpResponse(content_type='application/pdf')
+        response['Content-Disposition'] = 'attachment; filename="somefilename.pdf"'
+
+        canvas_blank = canvas.Canvas(response)
+        pdfmetrics.registerFont(TTFont('FreeSans', 'FreeSans.ttf'))
+        canvas_blank.setFont('FreeSans', 14)
+
+        row = 800
+        for ingredient_list in shop_list_amount:
+            canvas_blank.drawString(
+                100,
+                row,
+                f'{shop_list_name[ingredient_list]} - '
+                f'{shop_list_amount[ingredient_list]}')
+            row -= 20
+
+        canvas_blank.showPage()
+        canvas_blank.save()
+        return response
 
     @action(methods=['get', 'delete'], detail=True)
     def shopping_cart(self, request, pk=None):
