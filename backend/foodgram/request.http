@@ -1,0 +1,172 @@
+POST http://127.0.0.1:8000/api/users/
+Content-Type: application/json
+
+{
+    "email": "user1@user.com",
+    "username": "user1",
+    "password": "user5tg6yh",
+    "first_name": "user1first",
+    "last_name": "user1last"
+}
+
+###
+GET http://127.0.0.1:8000/api/components/
+Content-Type: application/json
+Authorization: Token 0b73bd43fd9a8795571825d09bcca036c0e1528d
+
+
+
+###
+GET http://127.0.0.1:8000/api/recipes/
+Content-Type: application/json
+Authorization: Token 0b73bd43fd9a8795571825d09bcca036c0e1528d
+
+###
+POST http://127.0.0.1:8000/api/recipes/
+Content-Type: application/json
+Authorization: Token 0b73bd43fd9a8795571825d09bcca036c0e1528d
+
+{
+    "ingredients":[
+        {
+        "id": 123,
+        "amount": 11}
+    ],
+    "tags":[
+            1
+    ],
+    "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAgMAAABieywaAAAACVBMVEUAAAD///9fX1/S0ecCAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNoAAAAggCByxOyYQAAAABJRU5ErkJggg==",
+    "name": "ddfdfdfd",
+    "text": "ddfdfdfd wohou",
+    "cooking_time": 4040
+}
+
+###
+GET http://127.0.0.1:8000/api/recipes/2/
+Content-Type: application/json
+Authorization: Token 0b73bd43fd9a8795571825d09bcca036c0e1528d
+
+###
+GET http://127.0.0.1:8000/api/recipes/1/shopping_cart/
+Content-Type: application/json
+Authorization: Token 0b73bd43fd9a8795571825d09bcca036c0e1528d
+
+###
+GET http://127.0.0.1:8000/api/recipes/download_shopping_cart/
+Content-Type: application/json
+Authorization: Token 0b73bd43fd9a8795571825d09bcca036c0e1528d
+
+
+###
+DELETE http://127.0.0.1:8000/api/recipes/2/shopping_cart/
+Content-Type: application/json
+Authorization: Token 0b73bd43fd9a8795571825d09bcca036c0e1528d
+
+###
+GET http://127.0.0.1:8000/api/recipes/6/favorite/
+Content-Type: application/json
+Authorization: Token 0b73bd43fd9a8795571825d09bcca036c0e1528d
+
+###
+DELETE http://127.0.0.1:8000/api/recipes/7/favorite/
+Content-Type: application/json
+Authorization: Token 0b73bd43fd9a8795571825d09bcca036c0e1528d
+
+###
+PUT http://127.0.0.1:8000/api/recipes/6/
+Content-Type: application/json
+Authorization: Token 0b73bd43fd9a8795571825d09bcca036c0e1528d
+
+{
+    "ingredients":[
+        {
+            "id": 10,
+            "amount": 1},
+        {
+            "id": 20,
+            "amount": 2
+        }
+    ],
+    "tags":[
+            1
+    ],
+    "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAgMAAABieywaAAAACVBMVEUAAAD///9fX1/S0ecCAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNoAAAAggCByxOyYQAAAABJRU5ErkJggg==",
+    "name": "new1  wohou",
+    "text": "new1 text wohou",
+    "cooking_time": 29993
+}
+
+
+
+###
+DELETE http://127.0.0.1:8000/api/recipes/1/
+Content-Type: application/json
+Authorization: Token 0b73bd43fd9a8795571825d09bcca036c0e1528d
+
+
+###
+GET http://127.0.0.1:8000/api/loaddata/
+Content-Type: application/json
+Authorization: Token 0b73bd43fd9a8795571825d09bcca036c0e1528d
+
+###
+GET http://127.0.0.1:8000/api/tags/
+Content-Type: application/json
+Authorization: Token 0b73bd43fd9a8795571825d09bcca036c0e1528d
+
+
+###
+GET http://127.0.0.1/api/users/
+Authorization: Token 0b73bd43fd9a8795571825d09bcca036c0e1528d
+
+
+###
+POST http://127.0.0.1:8000/api/auth/token/login/
+Content-Type: application/json
+
+{
+    "email": "ad@ad.ru",
+    "password": "adadad"
+}
+
+###
+POST http://127.0.0.1:8000/api/auth/token/logout/
+Authorization: Token 0b73bd43fd9a8795571825d09bcca036c0e1528d
+
+###
+POST http://127.0.0.1:8000/users/users/set_password/
+Authorization: Token 0b73bd43fd9a8795571825d09bcca036c0e1528d
+Content-Type: application/json
+
+{
+    "new_password": "adadad",
+    "current_password": "1ad1ad1ad"
+}
+
+###
+GET http://127.0.0.1:8000/api/users/subscriptions/
+Content-Type: application/json
+Authorization: Token 0b73bd43fd9a8795571825d09bcca036c0e1528d
+
+###
+GET http://127.0.0.1:8000/api/users/3/subscribe/
+Content-Type: application/json
+Authorization: Token 0b73bd43fd9a8795571825d09bcca036c0e1528d
+
+###
+DELETE http://127.0.0.1:8000/api/users/3/subscribe/
+Content-Type: application/json
+Authorization: Token 0b73bd43fd9a8795571825d09bcca036c0e1528d
+
+
+###
+GET http://127.0.0.1:8000/api/users/me/
+Content-Type: application/json
+Authorization: Token 0b73bd43fd9a8795571825d09bcca036c0e1528d
+
+
+
+###
+GET http://127.0.0.1:8000/api/ingredients/
+Content-Type: application/json
+Authorization: Token 0b73bd43fd9a8795571825d09bcca036c0e1528d
