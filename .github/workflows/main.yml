@@ -18,7 +18,8 @@ jobs:
         key: ${{ secrets.SSH_KEY }}
         passphrase: ${{ secrets.PASSPHRASE }}
         source: "docs/openapi-schema.yml, docs/redoc.html"
-        target: ""
+        target: "docs"
+        strip_components: 1
 
   tests:
     runs-on: ubuntu-latest
