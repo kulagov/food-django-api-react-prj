@@ -5,7 +5,7 @@ from django_filters import rest_framework as filters
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfgen import canvas
-from rest_framework import mixins, status, viewsets
+from rest_framework import status, viewsets
 from rest_framework.decorators import action, api_view
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
@@ -17,13 +17,6 @@ from .serializers import (
     ComponentSerializer, IngredientSerializer, RecipeSerializer,
     RecipeSerializerCreate, ShopAndFavoriteSerializer, TagSerializer,
 )
-
-
-class ListDeleteViewSet(mixins.ListModelMixin,
-                        mixins.RetrieveModelMixin,
-                        # mixins.DestroyModelMixin,
-                        viewsets.GenericViewSet):
-    pass
 
 
 class RecipeViewSet(viewsets.ModelViewSet):
@@ -137,31 +130,12 @@ class TagViewSet(viewsets.ReadOnlyModelViewSet):
     pagination_class = None
 
 
-# class IngredientViewSet(generics.ListAPIView):
 class IngredientViewSet(viewsets.ModelViewSet):
     queryset = Ingredient.objects.all()
     serializer_class = IngredientSerializer
     filterset_class = IngredientsFilter
     filter_backends = (filters.DjangoFilterBackend,)
     pagination_class = None
-
-
-@api_view(['GET', 'POST'])
-def loaddata(request):
-    print('___ start load data ___')
-    with open('../../data/ingredients.json', encoding='utf-8') as data_file:
-        json_data = json.loads(data_file.read())
-
-        for ingredients_data in json_data:
-            Ingredient.objects.get_or_create(
-                name=ingredients_data['name'],
-                measurement_unit=ingredients_data['measurement_unit']
-            )
-            # print(ingredients_data['name'])
-    print('___ end load data ___')
-    queryset = Ingredient.objects.all()
-    serializer = IngredientSerializer(queryset, many=True)
-    return Response(serializer.data)
 
 
 class ComponentViewSet(viewsets.ModelViewSet):

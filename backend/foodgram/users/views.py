@@ -1,16 +1,15 @@
-from django.db import models
-from django.urls.conf import path
 from djoser.views import UserViewSet
-from rest_framework import generics, mixins, serializers, status, viewsets
+from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.generics import get_object_or_404
-from rest_framework.response import Response
-from rest_framework.viewsets import GenericViewSet, ModelViewSet
+from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+
+from api.serializers import UserFollowSerializer
+
 from .models import Follow, User
 from .serializers import UserSerializer
-from api.serializers import UserFollowSerializer
-from rest_framework.pagination import LimitOffsetPagination
 
 
 class CustomUserViewSet(UserViewSet):
@@ -54,9 +53,3 @@ class CustomUserViewSet(UserViewSet):
                 )
         serializer = self.get_serializer(follow)
         return Response(serializer.data)
-
-
-class ListOrCreateViewSet(mixins.CreateModelMixin,
-                          mixins.ListModelMixin,
-                          GenericViewSet):
-    pass

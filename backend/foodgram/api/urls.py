@@ -16,5 +16,4 @@ router_v1.register('components', ComponentViewSet)
 urlpatterns = [
     path('', include('users.urls')),
     path('', include(router_v1.urls)),
-    path('loaddata/', loaddata),
 ]
