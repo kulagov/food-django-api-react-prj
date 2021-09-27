@@ -7,11 +7,11 @@ from django.db.models import fields
 from django.db.models.base import Model
 from django.shortcuts import get_object_or_404
 from rest_framework import serializers
-from users.models import Follow
+
+from users.models import Follow, User
 from users.serializers import UserSerializer
 
 from .models import Component, Favorite, Ingredient, Recipe, ShoppingList, Tag
-from users.models import User
 
 
 class IngredientSerializer(serializers.ModelSerializer):
@@ -69,6 +69,7 @@ class RecipeSerializer(serializers.ModelSerializer):
     tags = TagSerializer(many=True, read_only=True)
     author = UserSerializer(read_only=True)
     is_in_shopping_cart = serializers.SerializerMethodField()
+    is_favorited = serializers.SerializerMethodField()
 
     class Meta:
         model = Recipe
@@ -77,7 +78,7 @@ class RecipeSerializer(serializers.ModelSerializer):
             'author',
             'ingredients',
             'tags',
-            # 'is_favorited',
+            'is_favorited',
             'is_in_shopping_cart',
             'image',
             'name',
@@ -90,7 +91,14 @@ class RecipeSerializer(serializers.ModelSerializer):
             'ingredients': {'required': True},
             'tags': {'required': True},
             'image': {'required': True},
+            'is_favorited': {'required': True},
         }
+
+    def get_is_favorited(self, obj):
+        return Favorite.objects.filter(
+            user=self.context['request'].user,
+            recipe=obj
+        ).exists()
 
     def get_is_in_shopping_cart(self, obj):
         return ShoppingList.objects.filter(
