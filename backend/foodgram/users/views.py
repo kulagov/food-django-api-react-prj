@@ -21,7 +21,7 @@ class CustomUserViewSet(UserViewSet):
         serializer = self.get_serializer(follower, many=True)
         return Response(serializer.data)
 
-    @action(['get'], detail=False)
+    @action(['get'], detail=False, permission_classes=[IsAuthenticated, ])
     def me(self, request):
         user = User.objects.get(id=request.user.id)
         serializer = self.get_serializer(user)
