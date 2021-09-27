@@ -11,6 +11,7 @@ from users.models import Follow
 from users.serializers import UserSerializer
 
 from .models import Component, Favorite, Ingredient, Recipe, ShoppingList, Tag
+from users.models import User
 
 
 class IngredientSerializer(serializers.ModelSerializer):
@@ -98,6 +99,59 @@ class RecipeSerializer(serializers.ModelSerializer):
         ).exists()
 
 
+class Base64ImageField(serializers.ImageField):
+    def to_internal_value(self, data):
+        if isinstance(data, str) and data.startswith('data:image'):
+            format, imgstr = data.split(';base64,')
+            ext = format.split('/')[-1]
+            id = uuid.uuid4()
+            data = ContentFile(
+                base64.b64decode(imgstr), name=id.urn[9:] + '.' + ext)
+        return super(Base64ImageField, self).to_internal_value(data)
+
+
+class UserRecipeSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Recipe
+        fields = (
+            'id',
+            'name',
+            'image',
+            'cooking_time'
+        )
+        extra_kwargs = {
+            'id': {'required': True},
+            'cooking_time': {'required': True},
+            'image': {'required': True},
+        }
+
+
+class UserFollowSerializer(serializers.ModelSerializer):
+    is_subscribed = serializers.SerializerMethodField()
+    recipes = UserRecipeSerializer(many=True, read_only=True)
+    recipes_count = serializers.SerializerMethodField()
+
+    class Meta:
+        model = User
+        fields = (
+            'email',
+            'id',
+            'username',
+            'first_name',
+            'last_name',
+            'is_subscribed',
+            'recipes',
+            'recipes_count'
+        )
+
+    def get_is_subscribed(self, obj):
+        return True
+
+    def get_recipes_count(self, obj):
+        return obj.recipes.count()
+
+
 class ComponentSerializerCreate(serializers.ModelSerializer):
     id = serializers.PrimaryKeyRelatedField(
         source='ingredient',
@@ -110,17 +164,6 @@ class ComponentSerializerCreate(serializers.ModelSerializer):
             'id',
             'amount'
         )
-
-
-class Base64ImageField(serializers.ImageField):
-    def to_internal_value(self, data):
-        if isinstance(data, str) and data.startswith('data:image'):
-            format, imgstr = data.split(';base64,')
-            ext = format.split('/')[-1]
-            id = uuid.uuid4()
-            data = ContentFile(
-                base64.b64decode(imgstr), name=id.urn[9:] + '.' + ext)
-        return super(Base64ImageField, self).to_internal_value(data)
 
 
 class RecipeSerializerCreate(serializers.ModelSerializer):

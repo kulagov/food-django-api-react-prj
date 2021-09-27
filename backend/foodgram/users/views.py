@@ -9,6 +9,7 @@ from rest_framework.viewsets import GenericViewSet, ModelViewSet
 from rest_framework.permissions import IsAuthenticated
 from .models import Follow, User
 from .serializers import UserSerializer
+from api.serializers import UserFollowSerializer
 
 
 class CustomUserViewSet(UserViewSet):
@@ -18,7 +19,8 @@ class CustomUserViewSet(UserViewSet):
     @action(['get'], detail=False, permission_classes=[IsAuthenticated, ])
     def subscriptions(self, request):
         follower = User.objects.filter(follow__user=request.user)
-        serializer = self.get_serializer(follower, many=True)
+        # serializer = self.get_serializer(follower, many=True)
+        serializer = UserFollowSerializer(follower, many=True)
         return Response(serializer.data)
 
     @action(['get'], detail=False, permission_classes=[IsAuthenticated, ])
