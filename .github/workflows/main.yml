@@ -3,9 +3,25 @@ on:
     push:
       branches: [ master ]
 
+  scp_docs:
+    name: scp docs
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: copy file via ssh password
+      uses: appleboy/scp-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USER }}
+        key: ${{ secrets.SSH_KEY }}
+        passphrase: ${{ secrets.PASSPHRASE }}
+        source: "docs/openapi-schema.yml, docs/redoc.html"
+        target: "/"
+
 jobs:
   tests:
     runs-on: ubuntu-latest
+    needs: scp_docs
 
     steps:
       - uses: actions/checkout@v2
@@ -23,21 +39,6 @@ jobs:
       - name: Test with flake8
         run: |
           python -m flake8
-  
-  scp_docs:
-    name: scp docs
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@master
-    - name: copy file via ssh password
-      uses: appleboy/scp-action@master
-      with:
-        host: ${{ secrets.HOST }}
-        username: ${{ secrets.USER }}
-        key: ${{ secrets.SSH_KEY }}
-        passphrase: ${{ secrets.PASSPHRASE }}
-        source: "docs/openapi-schema.yml, docs/redoc.html"
-        target: "docs"
 
   build_backend:
     name: Push backend Docker image to Docker Hub
