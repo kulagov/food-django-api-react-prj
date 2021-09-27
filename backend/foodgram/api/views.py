@@ -7,9 +7,11 @@ from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfgen import canvas
 from rest_framework import mixins, status, viewsets
 from rest_framework.decorators import action, api_view
+from rest_framework.pagination import LimitOffsetPagination
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
 
-from .filters import IngredientsFilter
+from .filters import IngredientsFilter, RecipesFilter
 from .models import Component, Favorite, Ingredient, Recipe, ShoppingList, Tag
 from .serializers import (
     ComponentSerializer, IngredientSerializer, RecipeSerializer,
@@ -24,10 +26,13 @@ class ListDeleteViewSet(mixins.ListModelMixin,
     pass
 
 
-# class RecipeViewSet(ListDeleteViewSet)
 class RecipeViewSet(viewsets.ModelViewSet):
     queryset = Recipe.objects.all()
+    permission_classes = [IsAuthenticatedOrReadOnly, ]
     serializer_class = RecipeSerializer
+    filterset_class = RecipesFilter
+    filter_backends = (filters.DjangoFilterBackend,)
+    pagination_class = LimitOffsetPagination
 
     def get_serializer_class(self):
         if self.action in ['update', 'create']:
