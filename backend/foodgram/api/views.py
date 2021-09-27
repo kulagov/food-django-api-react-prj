@@ -68,14 +68,18 @@ class RecipeViewSet(viewsets.ModelViewSet):
         row -= 40
 
         canvas_blank.setFont('FreeSans', 14)
-
+        item = 1
         for ingredient_list in shop_list_amount:
+            ingredient_item = shop_list_name[ingredient_list].capitalize()
+            ammount_item = shop_list_amount[ingredient_list]
             canvas_blank.drawString(
                 100,
                 row,
-                f'{shop_list_name[ingredient_list]} - '
-                f'{shop_list_amount[ingredient_list]}')
+                f'{item}. '
+                f'{ingredient_item} - '
+                f'{ammount_item}')
             row -= 20
+            item += 1
 
         canvas_blank.showPage()
         canvas_blank.save()
