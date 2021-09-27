@@ -10,20 +10,21 @@ from rest_framework.permissions import IsAuthenticated
 from .models import Follow, User
 from .serializers import UserSerializer
 from api.serializers import UserFollowSerializer
+from rest_framework.pagination import LimitOffsetPagination
 
 
 class CustomUserViewSet(UserViewSet):
     serializer_class = UserSerializer
-    permission_classes = None
+    permission_classes = [IsAuthenticated, ]
+    pagination_class = LimitOffsetPagination
 
-    @action(['get'], detail=False, permission_classes=[IsAuthenticated, ])
+    @action(['get'], detail=False)
     def subscriptions(self, request):
         follower = User.objects.filter(follow__user=request.user)
-        # serializer = self.get_serializer(follower, many=True)
         serializer = UserFollowSerializer(follower, many=True)
         return Response(serializer.data)
 
-    @action(['get'], detail=False, permission_classes=[IsAuthenticated, ])
+    @action(['get'], detail=False)
     def me(self, request):
         user = User.objects.get(id=request.user.id)
         serializer = self.get_serializer(user)
