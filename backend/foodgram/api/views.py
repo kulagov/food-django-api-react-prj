@@ -1,16 +1,15 @@
 import json
 
-import reportlab
-
-from django.db import models
 from django.http import HttpResponse
+from django_filters import rest_framework as filters
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfgen import canvas
-from rest_framework import filters, mixins, status, viewsets
+from rest_framework import mixins, status, viewsets
 from rest_framework.decorators import action, api_view
 from rest_framework.response import Response
 
+from .filters import IngredientsFilter
 from .models import Component, Favorite, Ingredient, Recipe, ShoppingList, Tag
 from .serializers import (
     ComponentSerializer, IngredientSerializer, RecipeSerializer,
@@ -133,11 +132,12 @@ class TagViewSet(viewsets.ReadOnlyModelViewSet):
     pagination_class = None
 
 
+# class IngredientViewSet(generics.ListAPIView):
 class IngredientViewSet(viewsets.ModelViewSet):
     queryset = Ingredient.objects.all()
     serializer_class = IngredientSerializer
-    filter_backends = (filters.SearchFilter,)
-    search_fields = ('^name',)
+    filterset_class = IngredientsFilter
+    filter_backends = (filters.DjangoFilterBackend,)
     pagination_class = None
 
 

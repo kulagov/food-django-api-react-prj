@@ -25,6 +25,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'sorl.thumbnail',
+    'django_filters',
     'users',
     'djoser',
     'api',
