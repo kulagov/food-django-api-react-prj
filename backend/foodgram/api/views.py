@@ -58,9 +58,17 @@ class RecipeViewSet(viewsets.ModelViewSet):
 
         canvas_blank = canvas.Canvas(response)
         pdfmetrics.registerFont(TTFont('FreeSans', 'FreeSans.ttf'))
-        canvas_blank.setFont('FreeSans', 14)
+        canvas_blank.setFont('FreeSans', 18)
 
         row = 800
+        canvas_blank.drawString(
+            100,
+            row,
+            'Список покупок:')
+        row -= 40
+
+        canvas_blank.setFont('FreeSans', 14)
+
         for ingredient_list in shop_list_amount:
             canvas_blank.drawString(
                 100,
