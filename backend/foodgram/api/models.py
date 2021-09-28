@@ -1,7 +1,8 @@
 from django.db import models
-from validators import validate_int_field
 
 from users.models import User
+
+from .validators import validate_int_field
 
 
 class Ingredient(models.Model):
@@ -103,6 +104,12 @@ class Component(models.Model):
     class Meta:
         verbose_name = 'Компонент'
         verbose_name_plural = 'Компоненты'
+        constraints = (
+            models.UniqueConstraint(
+                fields=('recipe', 'ingredient'),
+                name='unique_component'
+            ),
+        )
 
 
 class ShoppingList(models.Model):
