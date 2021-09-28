@@ -8,23 +8,33 @@ from .models import Follow, User
 
 class UserSerializer(serializers.ModelSerializer):
     is_subscribed = serializers.SerializerMethodField()
+    # username = serializers.CharField(source='username', read_only=True)
 
     class Meta:
-        fields = (
+        model = User
+        fields = [
             'email',
             'id',
             'username',
             'first_name',
             'last_name',
             'is_subscribed'
-        )
-        model = User
+        ]
+        extra_kwargs = {
+            'email': {'required': True},
+            'id': {'required': True},
+            'username': {'required': True},
+            'first_name': {'required': True},
+            'last_name': {'required': True},
+            'is_subscribed': {'required': True}
+        }
 
     def get_is_subscribed(self, obj):
-        if self.context['request'].user.is_anonymous:
+        if obj.is_anonymous:
+        # if self.context['request'].user.is_anonymous:
             return False
-        user = self.context['request'].user
-        return Follow.objects.filter(user=user, following=obj).exists()
+        # user = self.context['request'].user
+        return Follow.objects.filter(user=obj, following=obj).exists()
 
 
 class CustomUserCreateSerializer(UserCreateSerializer):

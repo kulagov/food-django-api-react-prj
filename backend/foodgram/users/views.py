@@ -26,8 +26,10 @@ class CustomUserViewSet(UserViewSet):
 
     @action(['get'], detail=False)
     def me(self, request):
-        user = User.objects.get(id=request.user.id)
-        serializer = self.get_serializer(user)
+        # user = User.objects.get(id=request.user.id)
+        serializer = UserSerializer(request.user)
+        # serializer = UserSerializer(user)
+        # serializer = self.get_serializer(request.user)
         return Response(serializer.data)
 
     @action(['get', 'delete'], detail=True)
