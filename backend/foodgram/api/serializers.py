@@ -199,9 +199,6 @@ class RecipeSerializerCreate(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         ingredients = validated_data.pop('components')
         tags = validated_data.pop('tags')
-        user = self.context['request'].user
-        if user != instance.author:
-            raise serializers.ValidationError('user != author')
 
         for attr, value in validated_data.items():
             setattr(instance, attr, value)
@@ -213,6 +210,11 @@ class RecipeSerializerCreate(serializers.ModelSerializer):
 
         instance.save()
         return instance
+
+    def validate(self, data):
+        if self.context['request'].user != self.instance.author:
+            raise serializers.ValidationError('Нельзя изменить чужой рецепт!')
+        return data
 
     def add_tags_and_components(self, obj, ingredients, tags):
         for ingredient in ingredients:
