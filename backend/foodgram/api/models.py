@@ -2,6 +2,7 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models import constraints
 from django.utils.translation import gettext_lazy
+
 from users.models import User
 
 

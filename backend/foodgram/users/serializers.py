@@ -8,7 +8,6 @@ from .models import Follow, User
 
 class UserSerializer(serializers.ModelSerializer):
     is_subscribed = serializers.SerializerMethodField()
-    # username = serializers.CharField(source='username', read_only=True)
 
     class Meta:
         model = User
@@ -31,10 +30,9 @@ class UserSerializer(serializers.ModelSerializer):
 
     def get_is_subscribed(self, obj):
         if obj.is_anonymous:
-        # if self.context['request'].user.is_anonymous:
             return False
-        # user = self.context['request'].user
-        return Follow.objects.filter(user=obj, following=obj).exists()
+        user = self.context['request'].user
+        return Follow.objects.filter(user=user, following=obj).exists()
 
 
 class CustomUserCreateSerializer(UserCreateSerializer):
