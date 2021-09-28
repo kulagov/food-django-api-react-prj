@@ -162,6 +162,15 @@ class ComponentSerializerCreate(serializers.ModelSerializer):
             'id',
             'amount'
         )
+        extra_kwargs = {
+            'amount': {'validators': []}
+        }
+
+    def validate_amount(self, value):
+        if value < 1:
+            raise serializers.ValidationError(
+                'Количество ингредиента должно быть целым числом и не менее 1!')
+        return value
 
 
 class RecipeSerializerCreate(serializers.ModelSerializer):
@@ -180,11 +189,21 @@ class RecipeSerializerCreate(serializers.ModelSerializer):
         )
         extra_kwargs = {
             'text': {'required': True},
-            'cooking_time': {'required': True},
+            'cooking_time': {'required': True,
+                             'validators': []},
             'ingredients': {'required': True},
             'tags': {'required': True},
             'image': {'required': True},
         }
+
+    # def validate_ingredients(self, value):
+        # return value
+
+    def validate_cooking_time(self, value):
+        if value < 1:
+            raise serializers.ValidationError(
+                'Время приготовления должно быть целым числом и не менее 1 минуты!')
+        return value
 
     def create(self, validated_data):
         ingredients = validated_data.pop('components')
