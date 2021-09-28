@@ -12,19 +12,19 @@ Content-Type: application/json
 ###
 GET http://127.0.0.1:8000/api/components/
 Content-Type: application/json
-Authorization: Token 0b73bd43fd9a8795571825d09bcca036c0e1528d
+Authorization: Token 64e3033c5c202bd461f3c5a61e3afc89905fb47b
 
 
 
 ###
 GET http://127.0.0.1:8000/api/recipes/
 Content-Type: application/json
-Authorization: Token 0b73bd43fd9a8795571825d09bcca036c0e1528d
+Authorization: Token 64e3033c5c202bd461f3c5a61e3afc89905fb47b
 
 ###
 POST http://127.0.0.1:8000/api/recipes/
 Content-Type: application/json
-Authorization: Token 0b73bd43fd9a8795571825d09bcca036c0e1528d
+Authorization: Token 64e3033c5c202bd461f3c5a61e3afc89905fb47b
 
 {
     "ingredients":[
@@ -44,23 +44,23 @@ Authorization: Token 0b73bd43fd9a8795571825d09bcca036c0e1528d
 ###
 GET http://127.0.0.1:8000/api/recipes/2/
 Content-Type: application/json
-Authorization: Token 0b73bd43fd9a8795571825d09bcca036c0e1528d
+Authorization: Token 64e3033c5c202bd461f3c5a61e3afc89905fb47b
 
 ###
 GET http://127.0.0.1:8000/api/recipes/1/shopping_cart/
 Content-Type: application/json
-Authorization: Token 0b73bd43fd9a8795571825d09bcca036c0e1528d
+Authorization: Token 64e3033c5c202bd461f3c5a61e3afc89905fb47b
 
 ###
 GET http://127.0.0.1:8000/api/recipes/download_shopping_cart/
 Content-Type: application/json
-Authorization: Token 0b73bd43fd9a8795571825d09bcca036c0e1528d
+Authorization: Token 64e3033c5c202bd461f3c5a61e3afc89905fb47b
 
 
 ###
 DELETE http://127.0.0.1:8000/api/recipes/2/shopping_cart/
 Content-Type: application/json
-Authorization: Token 0b73bd43fd9a8795571825d09bcca036c0e1528d
+Authorization: Token 64e3033c5c202bd461f3c5a61e3afc89905fb47b
 
 ###
 GET http://127.0.0.1:8000/api/recipes/?tags=tag1&author=1&limit=2&page=2
@@ -69,17 +69,17 @@ Content-Type: application/json
 ###
 GET http://127.0.0.1:8000/api/recipes/1/favorite/
 Content-Type: application/json
-Authorization: Token 0b73bd43fd9a8795571825d09bcca036c0e1528d
+Authorization: Token 64e3033c5c202bd461f3c5a61e3afc89905fb47b
 
 ###
 DELETE http://127.0.0.1:8000/api/recipes/7/favorite/
 Content-Type: application/json
-Authorization: Token 0b73bd43fd9a8795571825d09bcca036c0e1528d
+Authorization: Token 64e3033c5c202bd461f3c5a61e3afc89905fb47b
 
 ###
 PUT http://127.0.0.1:8000/api/recipes/6/
 Content-Type: application/json
-Authorization: Token 0b73bd43fd9a8795571825d09bcca036c0e1528d
+Authorization: Token 64e3033c5c202bd461f3c5a61e3afc89905fb47b
 
 {
     "ingredients":[
@@ -103,7 +103,7 @@ Authorization: Token 0b73bd43fd9a8795571825d09bcca036c0e1528d
 ###
 PATCH http://127.0.0.1:8000/api/recipes/6/
 Content-Type: application/json
-Authorization: Token 0b73bd43fd9a8795571825d09bcca036c0e1528d
+Authorization: Token 64e3033c5c202bd461f3c5a61e3afc89905fb47b
 
 {
     "ingredients":[
@@ -128,24 +128,24 @@ Authorization: Token 0b73bd43fd9a8795571825d09bcca036c0e1528d
 ###
 DELETE http://127.0.0.1:8000/api/recipes/1/
 Content-Type: application/json
-Authorization: Token 0b73bd43fd9a8795571825d09bcca036c0e1528d
+Authorization: Token 64e3033c5c202bd461f3c5a61e3afc89905fb47b
 
 
 ###
 GET http://127.0.0.1:8000/api/loaddata/
 Content-Type: application/json
-Authorization: Token 0b73bd43fd9a8795571825d09bcca036c0e1528d
+Authorization: Token 64e3033c5c202bd461f3c5a61e3afc89905fb47b
 
 ###
 GET http://127.0.0.1:8000/api/tags/
 Content-Type: application/json
-Authorization: Token 0b73bd43fd9a8795571825d09bcca036c0e1528d
+Authorization: Token 64e3033c5c202bd461f3c5a61e3afc89905fb47b
 
 
 ###
 GET http://127.0.0.1:8000/api/users/
 Content-Type: application/json
-Authorization: Token 0b73bd43fd9a8795571825d09bcca036c0e1528d
+Authorization: Token 64e3033c5c202bd461f3c5a61e3afc89905fb47b
 
 
 ###
@@ -159,11 +159,11 @@ Content-Type: application/json
 
 ###
 POST http://127.0.0.1:8000/api/auth/token/logout/
-Authorization: Token 0b73bd43fd9a8795571825d09bcca036c0e1528d
+Authorization: Token 64e3033c5c202bd461f3c5a61e3afc89905fb47b
 
 ###
 POST http://127.0.0.1:8000/users/users/set_password/
-Authorization: Token 0b73bd43fd9a8795571825d09bcca036c0e1528d
+Authorization: Token 64e3033c5c202bd461f3c5a61e3afc89905fb47b
 Content-Type: application/json
 
 {
@@ -174,30 +174,30 @@ Content-Type: application/json
 ###
 GET http://127.0.0.1:8000/api/users/subscriptions/
 Content-Type: application/json
-Authorization: Token 0b73bd43fd9a8795571825d09bcca036c0e1528d
+Authorization: Token 64e3033c5c202bd461f3c5a61e3afc89905fb47b
 
 ###
 GET http://127.0.0.1:8000/api/users/3/subscribe/
 Content-Type: application/json
-Authorization: Token 0b73bd43fd9a8795571825d09bcca036c0e1528d
+Authorization: Token 64e3033c5c202bd461f3c5a61e3afc89905fb47b
 
 ###
 DELETE http://127.0.0.1:8000/api/users/3/subscribe/
 Content-Type: application/json
-Authorization: Token 0b73bd43fd9a8795571825d09bcca036c0e1528d
+Authorization: Token 64e3033c5c202bd461f3c5a61e3afc89905fb47b
 
 
 ###
 GET http://127.0.0.1:8000/api/users/me/
 Content-Type: application/json
-Authorization: Token 0b73bd43fd9a8795571825d09bcca036c0e1528d
+Authorization: Token 64e3033c5c202bd461f3c5a61e3afc89905fb47b
 
 
 
 ###
 GET http://127.0.0.1:8000/api/ingredients/?name=ваниль
 Content-Type: application/json
-Authorization: Token 0b73bd43fd9a8795571825d09bcca036c0e1528d
+Authorization: Token 64e3033c5c202bd461f3c5a61e3afc89905fb47b
 
 
 ###

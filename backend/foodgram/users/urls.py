@@ -8,8 +8,6 @@ router_v1 = DefaultRouter()
 router_v1.register('users', CustomUserViewSet)
 
 urlpatterns = [
-    # path('', include('djoser.urls')),
     path('auth/', include('djoser.urls.authtoken')),
     path('', include(router_v1.urls)),
-    # path('users/subscriptions/', FollowViewSet.as_view()),
 ]

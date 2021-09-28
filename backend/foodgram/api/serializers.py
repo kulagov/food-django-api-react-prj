@@ -1,13 +1,11 @@
-import base64
-import uuid
 
-from django.core.files.base import ContentFile
 from django.shortcuts import get_object_or_404
 from rest_framework import serializers
 
 from users.models import User
 from users.serializers import UserSerializer
 
+from .fields import Base64ImageField
 from .models import Component, Favorite, Ingredient, Recipe, ShoppingList, Tag
 
 
@@ -110,17 +108,6 @@ class RecipeSerializer(serializers.ModelSerializer):
             recipe=obj).exists()
 
 
-class Base64ImageField(serializers.ImageField):
-    def to_internal_value(self, data):
-        if isinstance(data, str) and data.startswith('data:image'):
-            format, imgstr = data.split(';base64,')
-            ext = format.split('/')[-1]
-            id = uuid.uuid4()
-            data = ContentFile(
-                base64.b64decode(imgstr), name=id.urn[9:] + '.' + ext)
-        return super(Base64ImageField, self).to_internal_value(data)
-
-
 class UserRecipeSerializer(serializers.ModelSerializer):
 
     class Meta:
@@ -157,7 +144,7 @@ class UserFollowSerializer(serializers.ModelSerializer):
         )
 
     def get_is_subscribed(self, obj):
-        return True
+        return obj.follow.filter(user=self.context['user']).exists()
 
     def get_recipes_count(self, obj):
         return obj.recipes.count()
