@@ -169,7 +169,9 @@ class ComponentSerializerCreate(serializers.ModelSerializer):
     def validate_amount(self, value):
         if value < 1:
             raise serializers.ValidationError(
-                'Количество ингредиента должно быть целым числом и не менее 1!')
+                'Количество ингредиента должно быть '
+                'целым числом и не менее 1!'
+            )
         return value
 
 
@@ -202,7 +204,9 @@ class RecipeSerializerCreate(serializers.ModelSerializer):
     def validate_cooking_time(self, value):
         if value < 1:
             raise serializers.ValidationError(
-                'Время приготовления должно быть целым числом и не менее 1 минуты!')
+                'Время приготовления должно быть '
+                'целым числом и не менее 1 минуты!'
+            )
         return value
 
     def create(self, validated_data):
