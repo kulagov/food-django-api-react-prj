@@ -212,6 +212,8 @@ class RecipeSerializerCreate(serializers.ModelSerializer):
         return instance
 
     def validate(self, data):
+        if self.instance is None:
+            return data
         if self.context['request'].user != self.instance.author:
             raise serializers.ValidationError('Нельзя изменить чужой рецепт!')
         return data
