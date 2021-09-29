@@ -48,7 +48,7 @@ class CustomUserViewSet(UserViewSet):
                     following=follow
                 )
                 following.delete()
-            except Exception:
+            except ValueError:
                 return Response(
                     {'errors': 'Вы не подписаны на этого пользователя', },
                     status.HTTP_400_BAD_REQUEST

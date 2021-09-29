@@ -1,5 +1,3 @@
-import json
-
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django_filters import rest_framework as filters
@@ -7,7 +5,7 @@ from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfgen import canvas
 from rest_framework import status, viewsets
-from rest_framework.decorators import action, api_view
+from rest_framework.decorators import action
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
@@ -42,6 +40,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
         components = Component.objects.in_bulk(shop_list)
         shop_list_amount = {}
         shop_list_name = {}
+
         for comp_obj in components.values():
             ingredient_item = comp_obj.ingredient
             amount_item = comp_obj.amount

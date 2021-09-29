@@ -1,5 +1,4 @@
 FROM python:3.8.5
-RUN mkdir /code
 WORKDIR /code
 COPY requirements.txt requirements.txt
 RUN python -m pip install --upgrade pip
