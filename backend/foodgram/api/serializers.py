@@ -1,6 +1,7 @@
 
 from django.shortcuts import get_object_or_404
 from rest_framework import serializers
+from rest_framework.validators import UniqueValidator
 
 from users.models import User
 from users.serializers import UserSerializer
@@ -154,16 +155,17 @@ class ComponentSerializerCreate(serializers.ModelSerializer):
     id = serializers.PrimaryKeyRelatedField(
         source='ingredient',
         queryset=Ingredient.objects.all(),
+        validators=[UniqueValidator(queryset=Component.objects.all())]
     )
 
     class Meta:
         model = Component
         fields = (
             'id',
-            'amount'
+            'amount',
         )
         extra_kwargs = {
-            'amount': {'validators': []}
+            'amount': {'validators': []},
         }
 
     def validate_amount(self, value):
@@ -198,8 +200,6 @@ class RecipeSerializerCreate(serializers.ModelSerializer):
             'image': {'required': True},
         }
 
-    # def validate_ingredients(self, value):
-        # return value
 
     def validate_cooking_time(self, value):
         if value < 1:
