@@ -200,7 +200,6 @@ class RecipeSerializerCreate(serializers.ModelSerializer):
             'image': {'required': True},
         }
 
-
     def validate_cooking_time(self, value):
         if value < 1:
             raise serializers.ValidationError(
