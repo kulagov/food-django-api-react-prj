@@ -34,20 +34,22 @@ class RecipeViewSet(viewsets.ModelViewSet):
 
     @action(detail=False)
     def download_shopping_cart(self, request):
-        shop_list_user = ShoppingList.objects.filter(user=request.user)
+        shop_list = list(
+            request.user.shoppinglist.values_list('recipe__components'))
+        for _ in range(0, len(shop_list)):
+            shop_list[_] = shop_list[_][0]
+        components = Component.objects.in_bulk(shop_list)
         shop_list_amount = {}
         shop_list_name = {}
-        for shop_item in shop_list_user:
-            components = Component.objects.filter(recipe=shop_item.recipe)
-            for comp_item in components:
-                ingredient_item = comp_item.ingredient
-                amount_item = comp_item.amount
-                if ingredient_item.id in shop_list_amount.keys():
-                    shop_list_amount[ingredient_item.id] = (
-                        shop_list_amount[ingredient_item.id] + amount_item)
-                else:
-                    shop_list_amount[ingredient_item.id] = amount_item
-                    shop_list_name[ingredient_item.id] = ingredient_item
+        for comp_obj in components.values():
+            ingredient_item = comp_obj.ingredient
+            amount_item = comp_obj.amount
+            if ingredient_item.id in shop_list_amount.keys():
+                shop_list_amount[ingredient_item.id] = (
+                    shop_list_amount[ingredient_item.id] + amount_item)
+            else:
+                shop_list_amount[ingredient_item.id] = amount_item
+                shop_list_name[ingredient_item.id] = ingredient_item
 
         response = HttpResponse(content_type='application/pdf')
         response['Content-Disposition'] = (
