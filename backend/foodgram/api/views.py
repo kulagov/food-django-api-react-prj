@@ -1,6 +1,7 @@
 import json
 
 from django.http import HttpResponse
+from django.shortcuts import get_object_or_404
 from django_filters import rest_framework as filters
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
@@ -44,7 +45,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
         for comp_obj in components.values():
             ingredient_item = comp_obj.ingredient
             amount_item = comp_obj.amount
-            if ingredient_item.id in shop_list_amount.keys():
+            if ingredient_item.id in shop_list_amount:
                 shop_list_amount[ingredient_item.id] = (
                     shop_list_amount[ingredient_item.id] + amount_item)
             else:
@@ -97,7 +98,8 @@ class RecipeViewSet(viewsets.ModelViewSet):
         flag = ShoppingList.objects.filter(user=request.user,
                                            recipe=self.get_object()).exists()
         if (request.method == 'DELETE' and flag):
-            ShoppingList.objects.get(
+            get_object_or_404(
+                ShoppingList,
                 user=request.user,
                 recipe=self.get_object()
             ).delete()
@@ -117,7 +119,8 @@ class RecipeViewSet(viewsets.ModelViewSet):
         flag = Favorite.objects.filter(user=request.user,
                                        recipe=self.get_object()).exists()
         if (request.method == 'DELETE' and flag):
-            Favorite.objects.get(
+            get_object_or_404(
+                Favorite,
                 user=request.user,
                 recipe=self.get_object()
             ).delete()
