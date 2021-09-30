@@ -1,8 +1,13 @@
 
+import re
+
+from django.db.models.fields import DateField
 from django.shortcuts import get_object_or_404
+from django.utils.functional import empty
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 
+from api.validators import validate_int_field
 from users.models import User
 from users.serializers import UserSerializer
 
@@ -154,8 +159,7 @@ class UserFollowSerializer(serializers.ModelSerializer):
 class ComponentSerializerCreate(serializers.ModelSerializer):
     id = serializers.PrimaryKeyRelatedField(
         source='ingredient',
-        queryset=Ingredient.objects.all(),
-        validators=[UniqueValidator(queryset=Component.objects.all())]
+        queryset=Ingredient.objects.all()
     )
 
     class Meta:
@@ -175,6 +179,15 @@ class ComponentSerializerCreate(serializers.ModelSerializer):
                 'целым числом и не менее 1!'
             )
         return value
+
+    # def validate_id(self, value):
+    #     set_id = set()
+    #     for item in self.context['request']._full_data['ingredients']:
+    #         if (item['id'] in set_id) and (item['id'] == value.id):
+    #             raise serializers.ValidationError(
+    #                 'Ингредиенты в рецепте должны быть уникальны.')
+    #         set_id.add(item['id'])
+    #     return value
 
 
 class RecipeSerializerCreate(serializers.ModelSerializer):
@@ -232,6 +245,18 @@ class RecipeSerializerCreate(serializers.ModelSerializer):
 
         instance.save()
         return instance
+
+    def validate_ingredients(self, value):
+        if len(value) == 0:
+            raise serializers.ValidationError(
+                'Должен быть хоть один ингредиент.')
+        set_id = set()
+        for item in value:
+            if item['ingredient'].id in set_id:
+                raise serializers.ValidationError(
+                    'Ингредиенты в рецепте должны быть уникальны.')
+            set_id.add(item['ingredient'].id)
+        return value
 
     def validate(self, data):
         if self.instance is None:
