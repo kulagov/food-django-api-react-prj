@@ -35,8 +35,8 @@ class RecipeViewSet(viewsets.ModelViewSet):
     def download_shopping_cart(self, request):
         shop_list = list(
             request.user.shoppinglist.values_list('recipe__components'))
-        for _ in range(0, len(shop_list)):
-            shop_list[_] = shop_list[_][0]
+        for shop_list_item in range(0, len(shop_list)):
+            shop_list[shop_list_item] = shop_list[shop_list_item][0]
         components = Component.objects.in_bulk(shop_list)
         shop_list_amount = {}
         shop_list_name = {}

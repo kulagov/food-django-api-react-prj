@@ -13,12 +13,12 @@ class Ingredient(models.Model):
         verbose_name='Единица измерения',
         max_length=50)
 
-    def __str__(self):
-        return f'{self.name}, {self.measurement_unit}'
-
     class Meta:
         verbose_name = 'Ингредиент'
         verbose_name_plural = 'Ингредиенты'
+
+    def __str__(self):
+        return f'{self.name}, {self.measurement_unit}'
 
 
 class Tag(models.Model):
@@ -33,12 +33,12 @@ class Tag(models.Model):
         max_length=50,
         unique=True)
 
-    def __str__(self):
-        return f'{self.name} - {self.color}'
-
     class Meta:
         verbose_name = 'Тэг'
         verbose_name_plural = 'Тэги'
+
+    def __str__(self):
+        return f'{self.name} - {self.color}'
 
 
 class Recipe(models.Model):
@@ -76,12 +76,12 @@ class Recipe(models.Model):
         verbose_name='Ингредиенты'
     )
 
-    def __str__(self):
-        return f'{self.name} /{self.author}/'
-
     class Meta:
         verbose_name = 'Рецепт'
         verbose_name_plural = 'Рецепты'
+
+    def __str__(self):
+        return f'{self.name} /{self.author}/'
 
 
 class Component(models.Model):
@@ -124,9 +124,6 @@ class ShoppingList(models.Model):
         related_name='shoppinglist'
     )
 
-    def __str__(self) -> str:
-        return f'{self.user} -{self.recipe}'
-
     class Meta:
         verbose_name = 'Список покупок'
         verbose_name_plural = 'Списки покупок'
@@ -136,6 +133,9 @@ class ShoppingList(models.Model):
                 name='unique_shopping_list'
             ),
         )
+
+    def __str__(self) -> str:
+        return f'{self.user} -{self.recipe}'
 
 
 class Favorite(models.Model):
