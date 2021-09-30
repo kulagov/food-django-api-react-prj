@@ -30,7 +30,7 @@ class RecipesFilter(django_filters.FilterSet):
     def filter_is_favorited(self, queryset, name, value):
         if value == 1:
             return queryset.filter(favlist__user=self.request.user)
-        return queryset.exclude(favlist__user=self.request.user) 
+        return queryset.exclude(favlist__user=self.request.user)
         # FIXME если не 0 то выдать ошибку
 
     def filter_is_in_shopping_cart(self, queryset, name, value):
