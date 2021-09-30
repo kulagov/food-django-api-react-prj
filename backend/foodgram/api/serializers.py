@@ -41,14 +41,8 @@ class ComponentSerializer(serializers.ModelSerializer):
         source='ingredient',
         queryset=Ingredient.objects.all(),
     )
-    name = serializers.StringRelatedField(
-        read_only=True,
-        source='ingredient'
-    )
-    measurement_unit = serializers.StringRelatedField(
-        read_only=True,
-        source='ingredient'
-    )
+    name = serializers.SerializerMethodField()
+    measurement_unit = serializers.SerializerMethodField()
 
     class Meta:
         model = Component
@@ -58,6 +52,12 @@ class ComponentSerializer(serializers.ModelSerializer):
             'measurement_unit',
             'amount',
         )
+
+    def get_measurement_unit(self, obj):
+        return obj.ingredient.measurement_unit
+
+    def get_name(self, obj):
+        return obj.ingredient.name
 
 
 class RecipeSerializer(serializers.ModelSerializer):
