@@ -6,8 +6,7 @@ from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
-from api.serializers import UserFollowSerializer
-
+from ..api.serializers import UserFollowSerializer
 from .models import Follow, User
 from .serializers import UserSerializer
 

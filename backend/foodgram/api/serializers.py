@@ -1,16 +1,8 @@
-
-import re
-
-from django.db.models.fields import DateField
 from django.shortcuts import get_object_or_404
-from django.utils.functional import empty
 from rest_framework import serializers
-from rest_framework.validators import UniqueValidator
 
-from api.validators import validate_int_field
-from users.models import User
-from users.serializers import UserSerializer
-
+from ..users.models import User
+from ..users.serializers import UserSerializer
 from .fields import Base64ImageField
 from .models import Component, Favorite, Ingredient, Recipe, ShoppingList, Tag
 
