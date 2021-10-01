@@ -14,9 +14,8 @@ class IngredientsFilter(django_filters.FilterSet):
 
 
 class RecipesFilter(django_filters.FilterSet):
-    tags = django_filters.CharFilter(
-        field_name='tags',
-        method='filter_tags')
+    tags = django_filters.AllValuesMultipleFilter(
+        field_name='tags__slug')
     is_favorited = django_filters.BooleanFilter(
         field_name='is_favorited',
         method='filter_is_favorited')
@@ -27,20 +26,6 @@ class RecipesFilter(django_filters.FilterSet):
     class Meta:
         model = Recipe
         fields = ['author', 'tags', 'is_favorited', 'is_in_shopping_cart']
-
-    def filter_tags(self, queryset, name, value):
-        tag_list = self.request.query_params.getlist(name)
-        tags = tag_list.pop()
-        queryset_filtered = queryset.filter(tags__slug=tags)
-        while True:
-            if len(tag_list) == 0:
-                return queryset_filtered
-
-            tags = tag_list.pop()
-
-            queryset_filtered = queryset_filtered.union(
-                queryset.filter(tags__slug=tags)
-            )
 
     def filter_is_favorited(self, queryset, name, value):
         if value:
