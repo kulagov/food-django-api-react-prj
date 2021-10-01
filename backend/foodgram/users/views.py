@@ -6,9 +6,9 @@ from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
-from ..api.serializers import UserFollowSerializer
-from .models import Follow, User
-from .serializers import UserSerializer
+from api.serializers import UserFollowSerializer
+from users.models import Follow, User
+from users.serializers import UserSerializer
 
 
 class CustomUserViewSet(UserViewSet):

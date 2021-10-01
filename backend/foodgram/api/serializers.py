@@ -1,10 +1,11 @@
 from django.shortcuts import get_object_or_404
 from rest_framework import serializers
 
-from ..users.models import User
-from ..users.serializers import UserSerializer
-from .fields import Base64ImageField
-from .models import Component, Favorite, Ingredient, Recipe, ShoppingList, Tag
+from users.models import User
+from users.serializers import UserSerializer
+from api.fields import Base64ImageField
+from api.models import (Component, Favorite, Ingredient, Recipe,
+                        ShoppingList, Tag)
 
 
 class IngredientSerializer(serializers.ModelSerializer):

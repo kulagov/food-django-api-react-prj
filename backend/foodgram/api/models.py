@@ -1,7 +1,7 @@
 from django.db import models
 
-from ..users.models import User
-from .validators import validate_int_field
+from users.models import User
+from api.validators import validate_int_field
 
 
 class Ingredient(models.Model):
