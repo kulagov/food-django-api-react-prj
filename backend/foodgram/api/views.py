@@ -38,18 +38,21 @@ class RecipeViewSet(viewsets.ModelViewSet):
         for shop_list_item in range(0, len(shop_list)):
             shop_list[shop_list_item] = shop_list[shop_list_item][0]
         components = Component.objects.in_bulk(shop_list)
-        shop_list_amount = {}
-        shop_list_name = {}
+
+        shop_list_dict = {}
 
         for comp_obj in components.values():
             ingredient_item = comp_obj.ingredient
             amount_item = comp_obj.amount
-            if ingredient_item.id in shop_list_amount:
-                shop_list_amount[ingredient_item.id] = (
-                    shop_list_amount[ingredient_item.id] + amount_item)
+            if ingredient_item.id in shop_list_dict:
+                shop_list_dict[ingredient_item.id] += amount_item
             else:
-                shop_list_amount[ingredient_item.id] = amount_item
-                shop_list_name[ingredient_item.id] = ingredient_item
+                shop_list_dict[ingredient_item.id] = (
+                    ingredient_item.__str__(),
+                    amount_item)
+
+        sorted_list = dict(sorted(
+            shop_list_dict.items(), key=lambda x: x[1][0]))
 
         response = HttpResponse(content_type='application/pdf')
         response['Content-Disposition'] = (
@@ -68,16 +71,16 @@ class RecipeViewSet(viewsets.ModelViewSet):
 
         canvas_blank.setFont('FreeSans', 14)
         item = 1
-        for ingredient_list in shop_list_amount:
-            ingredient_item = shop_list_name[ingredient_list].__str__()
+
+        for ingredient_list in sorted_list:
+            ingredient_item, amount_item = sorted_list[ingredient_list]
             ingredient_item_cap = ingredient_item.capitalize()
-            ammount_item = shop_list_amount[ingredient_list]
             canvas_blank.drawString(
                 100,
                 row,
                 f'{item}. '
                 f'{ingredient_item_cap} - '
-                f'{ammount_item}')
+                f'{amount_item}')
             row -= 20
             item += 1
 
