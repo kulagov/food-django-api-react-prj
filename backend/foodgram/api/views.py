@@ -6,13 +6,15 @@ from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfgen import canvas
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
-from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
 
-from .filters import IngredientsFilter, RecipesFilter
-from .models import Component, Favorite, Ingredient, Recipe, ShoppingList, Tag
-from .serializers import (
+from api.filters import IngredientsFilter, RecipesFilter
+from api.models import (
+    Component, Favorite, Ingredient, Recipe, ShoppingList, Tag,
+)
+from api.paginations import PageLimitPagination
+from api.serializers import (
     ComponentSerializer, IngredientSerializer, RecipeSerializer,
     RecipeSerializerCreate, ShopAndFavoriteSerializer, TagSerializer,
 )
@@ -24,7 +26,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
     serializer_class = RecipeSerializer
     filterset_class = RecipesFilter
     filter_backends = (filters.DjangoFilterBackend,)
-    pagination_class = LimitOffsetPagination
+    pagination_class = PageLimitPagination
 
     def get_serializer_class(self):
         if self.action in ['update', 'create']:
