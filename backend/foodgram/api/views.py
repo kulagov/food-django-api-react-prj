@@ -45,7 +45,10 @@ class RecipeViewSet(viewsets.ModelViewSet):
             ingredient_item = comp_obj.ingredient
             amount_item = comp_obj.amount
             if ingredient_item.id in shop_list_dict:
-                shop_list_dict[ingredient_item.id] += amount_item
+                shop_list_dict[ingredient_item.id] = (
+                    shop_list_dict[ingredient_item.id][0],
+                    shop_list_dict[ingredient_item.id][1]+amount_item
+                )
             else:
                 shop_list_dict[ingredient_item.id] = (
                     ingredient_item.__str__(),
