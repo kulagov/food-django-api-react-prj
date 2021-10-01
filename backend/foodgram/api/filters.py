@@ -15,7 +15,7 @@ class IngredientsFilter(django_filters.FilterSet):
 
 class RecipesFilter(django_filters.FilterSet):
     tags = django_filters.CharFilter(
-        field_name='tags__slug')
+        field_name='tags__slug', lookup_expr='in')
     is_favorited = django_filters.BooleanFilter(
         field_name='is_favorited',
         method='filter_is_favorited')
