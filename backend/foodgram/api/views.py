@@ -29,7 +29,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
     pagination_class = PageLimitPagination
 
     def get_serializer_class(self):
-        if self.action in ['update', 'create']:
+        if self.action in ['create', 'update', 'partial_update']:
             return RecipeSerializerCreate
         return RecipeSerializer
 
