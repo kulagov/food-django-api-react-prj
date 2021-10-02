@@ -1,5 +1,5 @@
 # Сайт Foodgram - «Продуктовый помощник»
-![main workflow](https://github.com/kulagov/yamdb_final/actions/workflows/main.yml/badge.svg)
+![main workflow](https://github.com/kulagov/foodgram-project-react/actions/workflows/main.yml/badge.svg)
 
 ## Описание проекта
  На этом сервисе пользователи могут публиковать рецепты, подписываться на публикации других пользователей, добавлять понравившиеся рецепты в список «Избранное», а перед походом в магазин скачивать сводный список продуктов, необходимых для приготовления одного или нескольких выбранных блюд.
