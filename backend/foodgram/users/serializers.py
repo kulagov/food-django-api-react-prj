@@ -27,9 +27,9 @@ class UserSerializer(serializers.ModelSerializer):
         }
 
     def get_is_subscribed(self, obj):
-        if self.context['request'].auth is None:
-            return False
         try:
+            if self.context['request'].auth is None:
+                return False
             user = self.context['request'].user
         except KeyError:
             user = self.instance
