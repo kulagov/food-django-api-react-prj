@@ -1,11 +1,12 @@
 from django.shortcuts import get_object_or_404
 from rest_framework import serializers
 
+from api.fields import Base64ImageField
+from api.models import (
+    Component, Favorite, Ingredient, Recipe, ShoppingList, Tag,
+)
 from users.models import User
 from users.serializers import UserSerializer
-from api.fields import Base64ImageField
-from api.models import (Component, Favorite, Ingredient, Recipe,
-                        ShoppingList, Tag)
 
 
 class IngredientSerializer(serializers.ModelSerializer):
@@ -165,23 +166,6 @@ class ComponentSerializerCreate(serializers.ModelSerializer):
             'amount': {'validators': []},
         }
 
-    def validate_amount(self, value):
-        if value < 1:
-            raise serializers.ValidationError(
-                'Количество ингредиента должно быть '
-                'целым числом и не менее 1!'
-            )
-        return value
-
-    # def validate_id(self, value):
-    #     set_id = set()
-    #     for item in self.context['request']._full_data['ingredients']:
-    #         if (item['id'] in set_id) and (item['id'] == value.id):
-    #             raise serializers.ValidationError(
-    #                 'Ингредиенты в рецепте должны быть уникальны.')
-    #         set_id.add(item['id'])
-    #     return value
-
 
 class RecipeSerializerCreate(serializers.ModelSerializer):
     ingredients = ComponentSerializerCreate(many=True, source='components')
@@ -249,6 +233,10 @@ class RecipeSerializerCreate(serializers.ModelSerializer):
                 raise serializers.ValidationError(
                     'Ингредиенты в рецепте должны быть уникальны.')
             set_id.add(item['ingredient'].id)
+            if item['amount'] < 1:
+                raise serializers.ValidationError(
+                    'Количество ингредиента должно быть '
+                    'целым числом и не менее 1!')
         return value
 
     def validate(self, data):
