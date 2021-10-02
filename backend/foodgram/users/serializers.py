@@ -29,7 +29,10 @@ class UserSerializer(serializers.ModelSerializer):
     def get_is_subscribed(self, obj):
         if obj.is_anonymous:
             return False
-        user = self.context['request'].user
+        try:
+            user = self.context['request'].user
+        except KeyError:
+            user = self.instance
         return Follow.objects.filter(user=user, following=obj).exists()
 
 
