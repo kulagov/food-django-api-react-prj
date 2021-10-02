@@ -27,7 +27,7 @@ class UserSerializer(serializers.ModelSerializer):
         }
 
     def get_is_subscribed(self, obj):
-        if obj.is_anonymous:
+        if self.context['request'].auth is None:
             return False
         try:
             user = self.context['request'].user

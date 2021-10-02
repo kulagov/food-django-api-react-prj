@@ -3,7 +3,7 @@ from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.generics import get_object_or_404
 from rest_framework.pagination import LimitOffsetPagination
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
 
 from api.serializers import UserFollowSerializer
@@ -13,7 +13,7 @@ from users.serializers import UserSerializer
 
 class CustomUserViewSet(UserViewSet):
     serializer_class = UserSerializer
-    permission_classes = [IsAuthenticated, ]
+    permission_classes = [IsAuthenticatedOrReadOnly]
     pagination_class = LimitOffsetPagination
 
     @action(['get'], detail=False)
