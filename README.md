@@ -158,17 +158,6 @@
 ## Об авторе
 [Павел Кулагов]
 
-## Адрес сайта
-
-[62.84.117.3]
-
-admin:
-
-- ad@ad.ru - email
-
-- adadad - password
-
-
 [Python 3.7]: https://python.org
 [Django 2.2]: https://www.djangoproject.com/
 [Django REST framework 3.12]: https://www.django-rest-framework.org/
